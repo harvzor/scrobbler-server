@@ -1,25 +1,15 @@
 use std::io::{stdin,stdout,Write};
-
-#[derive(Debug)]
-struct Drink<'a> {
-    name: &'a str,
-    count: u32
-}
-
-impl Drink<'_> {
-    fn increment(&mut self) {
-        self.count = self.count + 1;
-    }
-}
-
+mod drink;
 
 fn main() {
-    let drinks: &mut [&Drink] = &mut [
-        &mut Drink {
+    let mut drinks: Vec<drink::Drink> = vec![];
+
+    drinks.push(
+        drink::Drink {
             name: "Coffee",
             count: 0,
         }
-    ];
+    );
 
     loop {
         let mut s = String::new();
@@ -41,7 +31,7 @@ fn main() {
 
         for drink in drinks.iter_mut() {
             if s == drink.name {
-                *drink.increment();
+                drink.increment();
             }
         }
 
