@@ -1,10 +1,10 @@
 #[derive(Debug)]
-pub struct Drink<'a> {
-    pub name: &'a str,
+pub struct Drink {
+    pub name: String,
     pub count: u32
 }
 
-impl Drink<'_> {
+impl Drink {
     pub fn increment(&mut self) {
         self.count = self.count + 1;
     }

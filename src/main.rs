@@ -4,37 +4,45 @@ mod drink;
 fn main() {
     let mut drinks: Vec<drink::Drink> = vec![];
 
-    drinks.push(
-        drink::Drink {
-            name: "Coffee",
-            count: 0,
-        }
-    );
-
     loop {
-        let mut s = String::new();
+        let mut user_input = String::new();
 
         print!("Drunk a drink? : ");
 
         let _ = stdout().flush();
 
-        stdin().read_line(&mut s)
+        stdin().read_line(&mut user_input)
             .expect("Did not enter a correct string");
 
-        if let Some('\n') = s.chars().next_back() {
-            s.pop();
+        if let Some('\n') = user_input.chars().next_back() {
+            user_input.pop();
         }
 
-        if let Some('\r') = s.chars().next_back() {
-            s.pop();
+        if let Some('\r') = user_input.chars().next_back() {
+            user_input.pop();
         }
+
+        let mut found_drink = false;
 
         for drink in drinks.iter_mut() {
-            if s == drink.name {
+            if user_input == drink.name {
                 drink.increment();
+
+                found_drink = true;
+
+                break;
             }
         }
 
-        println!("{:#?}", drinks[0]);
+        if !found_drink {
+            drinks.push(
+                drink::Drink {
+                    name: user_input,
+                    count: 0,
+                }
+            );
+        }
+
+        println!("{:#?}", drinks);
     }
 }
