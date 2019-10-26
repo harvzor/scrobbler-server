@@ -1,8 +1,8 @@
 use std::io::{stdin,stdout,Write};
-mod drink;
+mod drinks;
 
 fn main() {
-    let mut drinks: Vec<drink::Drink> = vec![];
+    let mut drinks = drinks::Drinks::new();
 
     loop {
         let mut user_input = String::new();
@@ -14,35 +14,43 @@ fn main() {
         stdin().read_line(&mut user_input)
             .expect("Did not enter a correct string");
 
-        if let Some('\n') = user_input.chars().next_back() {
-            user_input.pop();
-        }
+        user_input = clean_user_input(user_input);
 
-        if let Some('\r') = user_input.chars().next_back() {
-            user_input.pop();
-        }
+        let mut drink = drinks.find(user_input.clone());
 
-        let mut found_drink = false;
+        // if let Some(x) = &mut drink {
+        //     x.increment();
+        // } else {
+        //     drinks.add(
+        //         drinks::Drink {
+        //             name: user_input,
+        //             count: 0,
+        //         }
+        //     );
+        // }
 
-        for drink in drinks.iter_mut() {
-            if user_input == drink.name {
-                drink.increment();
-
-                found_drink = true;
-
-                break;
-            }
-        }
-
-        if !found_drink {
-            drinks.push(
-                drink::Drink {
+        match drink {
+            Some(x) => x.increment(),
+            None => drinks.add(
+                drinks::Drink {
                     name: user_input,
                     count: 0,
                 }
-            );
+            )
         }
 
         println!("{:#?}", drinks);
     }
+}
+
+fn clean_user_input(mut user_input: String) -> String {
+    if let Some('\n') = user_input.chars().next_back() {
+        user_input.pop();
+    }
+
+    if let Some('\r') = user_input.chars().next_back() {
+        user_input.pop();
+    }
+
+    return user_input;
 }
