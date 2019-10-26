@@ -12,7 +12,7 @@ impl Drink {
 
 #[derive(Debug)]
 pub struct Drinks {
-    pub drinks: Vec<Drink>
+    drinks: Vec<Drink>
 }
 
 impl Drinks {
