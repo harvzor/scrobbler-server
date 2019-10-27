@@ -11,9 +11,6 @@ impl Drinks {
             drinks: vec![]
         }
     }
-    pub fn get(self) -> Vec<drink::Drink> {
-        return self.drinks;
-    }
     pub fn add(&mut self, drink: drink::Drink) {
         self.drinks.push(drink);
     }

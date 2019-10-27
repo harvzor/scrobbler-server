@@ -2,7 +2,7 @@ use std::io::{stdin,stdout,Write};
 use crate::drink;
 use crate::drinks;
 
-pub fn cli(mut drinks: &mut drinks::Drinks) {
+pub fn cli(drinks: &mut drinks::Drinks) {
     let action = menu();
 
     match action {
@@ -14,15 +14,9 @@ pub fn cli(mut drinks: &mut drinks::Drinks) {
         },
         None => println!("??")
     }
-
-    // let mut drink = drinks.find(user_input.clone());
-
-    // match drink {
-    //     Some(x) => x.increment(),
-    // }
 }
 
-fn menu_add_drink(mut drinks: &mut drinks::Drinks) {
+fn menu_add_drink(drinks: &mut drinks::Drinks) {
     println!("");
     println!("## Add drink");
     print!("Drink name: ");
@@ -32,7 +26,7 @@ fn menu_add_drink(mut drinks: &mut drinks::Drinks) {
     let drink = drinks.find(user_input.clone());
 
     match drink {
-        Some(x) => println!("Drink already exists!"),
+        Some(_x) => println!("Drink already exists!"),
         None => drinks.add(
             drink::Drink {
                 name: user_input,
@@ -42,7 +36,7 @@ fn menu_add_drink(mut drinks: &mut drinks::Drinks) {
     }
 }
 
-fn menu_increment_drink(mut drinks: &mut drinks::Drinks) {
+fn menu_increment_drink(drinks: &mut drinks::Drinks) {
     println!("");
     println!("## Increment drink");
 
@@ -57,7 +51,7 @@ fn menu_increment_drink(mut drinks: &mut drinks::Drinks) {
     let mut user_input_index: usize = user_input.parse().unwrap();
     user_input_index = user_input_index - 1;
 
-    let mut drink = drinks.find_by_index(user_input_index);
+    let drink = drinks.find_by_index(user_input_index);
 
     drink.increment();
 }
