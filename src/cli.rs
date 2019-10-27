@@ -1,5 +1,4 @@
 use dialoguer::{theme::ColorfulTheme, Select, Input};
-use crate::drink;
 use crate::drinks;
 
 enum Action {
@@ -14,7 +13,7 @@ pub fn cli(drinks: &mut drinks::Drinks) {
 
     match user_action {
         Some(action) => match action {
-            Action::ListDrinks => println!("{:#?}", drinks),
+            Action::ListDrinks => menu_list_drinks(drinks),
             Action::AddDrink => menu_add_drink(drinks),
             Action::IncrementDrink => menu_increment_drink(drinks),
             Action::DeleteDrink => menu_delete_drink(drinks),
@@ -47,30 +46,36 @@ fn menu_get_action() -> Option<Action> {
     }
 }
 
+fn menu_list_drinks(drinks: &mut drinks::Drinks) {
+    println!("{:#?}", drinks.list(false));
+}
+
 fn menu_add_drink(drinks: &mut drinks::Drinks) {
     let user_input: String = Input::new()
         .with_prompt("Drink name")
         .interact()
         .unwrap();
 
-    let drink = drinks.find(user_input.clone());
+    let drink = drinks.find_by_name(user_input.clone());
 
     match drink {
         Some(_x) => println!("Drink already exists!"),
-        None => drinks.add(
-            drink::Drink {
-                name: user_input,
-                count: 1,
-            }
-        )
+        None => drinks.add(user_input),
     }
 }
 
 fn menu_increment_drink(drinks: &mut drinks::Drinks) {
-    let options: Vec<&String> = drinks.drinks
+    let mut drink_items = drinks.list_mut(false);
+
+    if drink_items.len() == 0 {
+        println!("No drinks to increment!");
+
+        return;
+    }
+
+    let options: Vec<&String> = drink_items
         .iter()
         .map(|x| &x.name)
-        .rev()
         .collect();
 
     let user_selection = Select::with_theme(&ColorfulTheme::default())
@@ -80,16 +85,21 @@ fn menu_increment_drink(drinks: &mut drinks::Drinks) {
         .interact()
         .unwrap();
 
-    let drink = drinks.find_by_index(user_selection);
-
-    drink.increment();
+    drink_items[user_selection].increment();
 }
 
 fn menu_delete_drink(drinks: &mut drinks::Drinks) {
-    let options: Vec<&String> = drinks.drinks
+    let drink_items = drinks.list(false);
+
+    if drink_items.len() == 0 {
+        println!("No drinks to increment!");
+
+        return;
+    }
+
+    let options: Vec<&String> = drink_items
         .iter()
         .map(|x| &x.name)
-        .rev()
         .collect();
 
     let user_selection = Select::with_theme(&ColorfulTheme::default())
@@ -99,5 +109,5 @@ fn menu_delete_drink(drinks: &mut drinks::Drinks) {
         .interact()
         .unwrap();
 
-    drinks.remove_by_index(user_selection);
+    drinks.delete_by_id(drink_items[user_selection].id, false);
 }

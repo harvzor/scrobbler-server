@@ -1,7 +1,9 @@
 #[derive(Debug)]
 pub struct Drink {
+    pub id: usize,
     pub name: String,
-    pub count: u32
+    pub count: u32,
+    pub deleted: bool,
 }
 
 impl Drink {
