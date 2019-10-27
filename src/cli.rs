@@ -1,4 +1,5 @@
 use std::io::{stdin,stdout,Write};
+use crate::drink;
 use crate::drinks;
 
 pub fn cli(mut drinks: &mut drinks::Drinks) {
@@ -18,7 +19,7 @@ pub fn cli(mut drinks: &mut drinks::Drinks) {
     match drink {
         Some(x) => x.increment(),
         None => drinks.add(
-            drinks::Drink {
+            drink::Drink {
                 name: user_input,
                 count: 1,
             }

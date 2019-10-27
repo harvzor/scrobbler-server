@@ -1,18 +1,8 @@
-#[derive(Debug)]
-pub struct Drink {
-    pub name: String,
-    pub count: u32
-}
-
-impl Drink {
-    pub fn increment(&mut self) {
-        self.count = self.count + 1;
-    }
-}
+use crate::drink;
 
 #[derive(Debug)]
 pub struct Drinks {
-    drinks: Vec<Drink>
+    drinks: Vec<drink::Drink>
 }
 
 impl Drinks {
@@ -21,10 +11,10 @@ impl Drinks {
             drinks: vec![]
         }
     }
-    pub fn add(&mut self, drink: Drink) {
+    pub fn add(&mut self, drink: drink::Drink) {
         self.drinks.push(drink);
     }
-    pub fn find(&mut self, name: String) -> Option<&mut Drink> {
+    pub fn find(&mut self, name: String) -> Option<&mut drink::Drink> {
         for drink in self.drinks.iter_mut() {
             if name == drink.name {
                 return Some(drink);

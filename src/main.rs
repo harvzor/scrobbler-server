@@ -1,3 +1,4 @@
+mod drink;
 mod drinks;
 mod cli;
 
