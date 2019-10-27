@@ -2,7 +2,7 @@ use crate::drink;
 
 #[derive(Debug)]
 pub struct Drinks {
-    drinks: Vec<drink::Drink>
+    pub drinks: Vec<drink::Drink>
 }
 
 impl Drinks {
@@ -10,6 +10,9 @@ impl Drinks {
         return Drinks {
             drinks: vec![]
         }
+    }
+    pub fn get(self) -> Vec<drink::Drink> {
+        return self.drinks;
     }
     pub fn add(&mut self, drink: drink::Drink) {
         self.drinks.push(drink);
@@ -22,5 +25,8 @@ impl Drinks {
         }
 
         return None;
+    }
+    pub fn find_by_index(&mut self, index: usize) -> &mut drink::Drink {
+        return &mut self.drinks[index];
     }
 }
