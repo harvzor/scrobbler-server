@@ -6,6 +6,7 @@ enum Action {
     ListDrinks,
     AddDrink,
     IncrementDrink,
+    DeleteDrink,
 }
 
 pub fn cli(drinks: &mut drinks::Drinks) {
@@ -16,6 +17,7 @@ pub fn cli(drinks: &mut drinks::Drinks) {
             Action::ListDrinks => println!("{:#?}", drinks),
             Action::AddDrink => menu_add_drink(drinks),
             Action::IncrementDrink => menu_increment_drink(drinks),
+            Action::DeleteDrink => menu_delete_drink(drinks),
         },
         None => println!("??")
     }
@@ -26,6 +28,7 @@ fn menu_get_action() -> Option<Action> {
         "List drinks",
         "Add drink",
         "Increment drink",
+        "Delete drink",
     ];
 
     let user_selection = Select::with_theme(&ColorfulTheme::default())
@@ -39,6 +42,7 @@ fn menu_get_action() -> Option<Action> {
         0 => Some(Action::ListDrinks),
         1 => Some(Action::AddDrink),
         2 => Some(Action::IncrementDrink),
+        3 => Some(Action::DeleteDrink),
         _ => None
     }
 }
@@ -79,4 +83,21 @@ fn menu_increment_drink(drinks: &mut drinks::Drinks) {
     let drink = drinks.find_by_index(user_selection);
 
     drink.increment();
+}
+
+fn menu_delete_drink(drinks: &mut drinks::Drinks) {
+    let options: Vec<&String> = drinks.drinks
+        .iter()
+        .map(|x| &x.name)
+        .rev()
+        .collect();
+
+    let user_selection = Select::with_theme(&ColorfulTheme::default())
+        .with_prompt("Delete drink")
+        .default(0)
+        .items(&options[..])
+        .interact()
+        .unwrap();
+
+    drinks.remove_by_index(user_selection);
 }

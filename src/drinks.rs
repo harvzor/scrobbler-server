@@ -26,4 +26,7 @@ impl Drinks {
     pub fn find_by_index(&mut self, index: usize) -> &mut drink::Drink {
         return &mut self.drinks[index];
     }
+    pub fn remove_by_index(&mut self, index: usize) {
+        self.drinks.remove(index);
+    }
 }
