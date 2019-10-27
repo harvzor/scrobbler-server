@@ -2,21 +2,26 @@ use dialoguer::{theme::ColorfulTheme, Select, Input};
 use crate::drink;
 use crate::drinks;
 
+enum Action {
+    ListDrinks,
+    AddDrink,
+    IncrementDrink,
+}
+
 pub fn cli(drinks: &mut drinks::Drinks) {
     let user_action = menu_get_action();
 
     match user_action {
-        Some(action_name) => match action_name.as_str() {
-            "list_drinks" => println!("{:#?}", drinks),
-            "add_drink" => menu_add_drink(drinks),
-            "increment_drink" => menu_increment_drink(drinks),
-            _ => println!("??")
+        Some(action) => match action {
+            Action::ListDrinks => println!("{:#?}", drinks),
+            Action::AddDrink => menu_add_drink(drinks),
+            Action::IncrementDrink => menu_increment_drink(drinks),
         },
         None => println!("??")
     }
 }
 
-fn menu_get_action() -> Option<String> {
+fn menu_get_action() -> Option<Action> {
     let options = &[
         "List drinks",
         "Add drink",
@@ -31,9 +36,9 @@ fn menu_get_action() -> Option<String> {
         .unwrap();
 
     match user_selection {
-        0 => Some("list_drinks".to_string()),
-        1 => Some("add_drink".to_string()),
-        2 => Some("increment_drink".to_string()),
+        0 => Some(Action::ListDrinks),
+        1 => Some(Action::AddDrink),
+        2 => Some(Action::IncrementDrink),
         _ => None
     }
 }
