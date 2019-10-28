@@ -26,7 +26,7 @@ impl Drinks {
     pub fn add(&mut self, name: String) {
         self.drinks.push(
             drink::Drink {
-                id: self.drinks.len(),
+                id: self.drinks.len() + 1,
                 name: name,
                 count: 1,
                 deleted: false,

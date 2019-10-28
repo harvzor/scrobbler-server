@@ -89,10 +89,10 @@ fn menu_increment_drink(drinks: &mut drinks::Drinks) {
 }
 
 fn menu_delete_drink(drinks: &mut drinks::Drinks) {
-    let drink_items = drinks.list(false);
+    let drink_items = drinks.list_mut(false);
 
     if drink_items.len() == 0 {
-        println!("No drinks to increment!");
+        println!("No drinks to delete!");
 
         return;
     }
@@ -109,5 +109,7 @@ fn menu_delete_drink(drinks: &mut drinks::Drinks) {
         .interact()
         .unwrap();
 
-    drinks.delete_by_id(drink_items[user_selection].id, false);
+    let id = drink_items[user_selection].id;
+
+    drinks.delete_by_id(id, false);
 }
