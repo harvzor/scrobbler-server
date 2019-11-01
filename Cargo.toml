@@ -8,3 +8,4 @@ edition = "2018"
 
 [dependencies]
 dialoguer = "0.4.0"
+rocket = "0.4.2"
