@@ -1,4 +1,4 @@
-use crate::drink;
+use crate::impls::drink;
 
 #[derive(Debug)]
 pub struct Drinks {

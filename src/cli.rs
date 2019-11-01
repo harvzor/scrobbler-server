@@ -1,5 +1,5 @@
 use dialoguer::{theme::ColorfulTheme, Select, Input};
-use crate::drinks;
+use crate::impls::drinks;
 
 enum Action {
     ListDrinks,

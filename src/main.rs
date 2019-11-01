@@ -1,9 +1,8 @@
-mod drink;
-mod drinks;
+mod impls;
 mod cli;
 
 fn main() {
-    let mut drinks = drinks::Drinks::new();
+    let mut drinks = impls::drinks::Drinks::new();
 
     loop {
         let drinks_ref = &mut drinks;
