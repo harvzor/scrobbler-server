@@ -3,34 +3,14 @@
 #[macro_use] extern crate rocket;
 
 mod impls;
-mod cli;
-
-#[get("/")]
-fn index() -> &'static str {
-    return "Drinks Drunk!";
-}
-
-#[get("/drinks")]
-fn drinks() -> String {
-    let mut drinks = impls::drinks::Drinks::new();
-
-    return format!("{:#?}", drinks.list(false));
-}
-
-#[get("/drinks/<id>")]
-fn drink(id: usize) -> String {
-    let mut drinks = impls::drinks::Drinks::new();
-
-    return format!("{:#?}", drinks.find_by_id(id));
-}
+// mod cli;
+mod api;
 
 fn main() {
     let mut drinks = impls::drinks::Drinks::new();
 
-    rocket::ignite()
-        .mount("/", routes![index, drinks, drink])
-        .mount("/drinks", routes![drinks, drink])
-        .launch();
+    api::Api::new(&mut drinks)
+        .run();
 
     // loop {
     //     cli::cli(&mut drinks);
