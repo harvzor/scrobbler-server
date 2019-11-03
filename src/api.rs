@@ -13,21 +13,21 @@ fn index() -> String {
 
 #[get("/")]
 fn drinks_get(drinks: State<Arc<Mutex<drinks::Drinks>>>) -> String {
-    let mut my_drinks = &mut *drinks.lock().unwrap();
+    let my_drinks = &mut *drinks.lock().unwrap();
 
     return format!("{:#?}", my_drinks.list(false));
 }
 
 #[get("/<id>")]
 fn drink_get(id: usize, drinks: State<Arc<Mutex<drinks::Drinks>>>) -> String {
-    let mut my_drinks = &mut *drinks.lock().unwrap();
+    let my_drinks = &mut *drinks.lock().unwrap();
 
     return format!("{:#?}", my_drinks.find_by_id(id));
 }
 
 #[post("/<name>")]
 fn drink_post(name: String, drinks: State<Arc<Mutex<drinks::Drinks>>>) -> String {
-    let mut my_drinks = &mut *drinks.lock().unwrap();
+    let my_drinks = &mut *drinks.lock().unwrap();
 
     my_drinks.add(name);
 
