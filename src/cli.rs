@@ -13,7 +13,7 @@ enum Action {
 pub fn cli(drinks: Arc<Mutex<drinks::Drinks>>) {
     let user_action = menu_get_action();
 
-    let mut my_drinks = &mut *drinks.lock().unwrap();
+    let mut my_drinks = &mut drinks.lock().unwrap();
 
     match user_action {
         Some(action) => match action {
