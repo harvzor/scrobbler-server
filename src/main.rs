@@ -3,6 +3,7 @@
 #[macro_use] extern crate rocket;
 
 use std::sync::{Arc, Mutex};
+use std::thread;
 
 mod impls;
 mod cli;
@@ -11,8 +12,12 @@ mod api;
 fn main() {
     let drinks = Arc::new(Mutex::new(impls::drinks::Drinks::new()));
 
-    api::Api::new(drinks.clone())
-        .run();
+    let drinks_api = drinks.clone();
+
+    thread::spawn(move || {
+        api::Api::new(drinks_api)
+            .run();
+    });
 
     loop {
         cli::cli(drinks.clone());
