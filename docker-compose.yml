@@ -1,0 +1,13 @@
+version: "3.4"
+
+services:
+  drinks-drunk:
+    build:
+      context: .
+      # target: runtime
+    # environment:
+      # foo: "bar"
+    ports:
+      - "8000:8000"
+    stdin_open: true
+    tty: true
