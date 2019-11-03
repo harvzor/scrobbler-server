@@ -63,6 +63,16 @@ impl Drinks {
             None => return None,
         }
     }
+    pub fn find_by_id_mut(&mut self, id: usize) -> Option<&mut drink::Drink> {
+        let index = self.drinks
+            .iter()
+            .position(|x| x.id == id);
+
+        match index {
+            Some(i) => return Some(&mut self.drinks[i]),
+            None => return None,
+        }
+    }
     pub fn delete_by_id(&mut self, id: usize, hard_delete: bool) {
         let index = self.drinks
             .iter()
