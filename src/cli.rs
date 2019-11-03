@@ -1,4 +1,6 @@
 use dialoguer::{theme::ColorfulTheme, Select, Input};
+use std::sync::{Arc, Mutex};
+
 use crate::impls::drinks;
 
 enum Action {
@@ -8,15 +10,17 @@ enum Action {
     DeleteDrink,
 }
 
-pub fn cli(drinks: &mut drinks::Drinks) {
+pub fn cli(drinks: Arc<Mutex<drinks::Drinks>>) {
     let user_action = menu_get_action();
+
+    let mut my_drinks = &mut *drinks.lock().unwrap();
 
     match user_action {
         Some(action) => match action {
-            Action::ListDrinks => menu_list_drinks(drinks),
-            Action::AddDrink => menu_add_drink(drinks),
-            Action::IncrementDrink => menu_increment_drink(drinks),
-            Action::DeleteDrink => menu_delete_drink(drinks),
+            Action::ListDrinks => menu_list_drinks(my_drinks),
+            Action::AddDrink => menu_add_drink(my_drinks),
+            Action::IncrementDrink => menu_increment_drink(my_drinks),
+            Action::DeleteDrink => menu_delete_drink(my_drinks),
         },
         None => println!("??")
     }

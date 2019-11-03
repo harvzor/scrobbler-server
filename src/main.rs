@@ -2,17 +2,19 @@
 
 #[macro_use] extern crate rocket;
 
+use std::sync::{Arc, Mutex};
+
 mod impls;
 // mod cli;
 mod api;
 
 fn main() {
-    let mut drinks = impls::drinks::Drinks::new();
+    let drinks = Arc::new(Mutex::new(impls::drinks::Drinks::new()));
 
-    api::Api::new(&mut drinks)
+    api::Api::new(drinks.clone())
         .run();
 
     // loop {
-    //     cli::cli(&mut drinks);
+    //     cli::cli(drinks.clone());
     // }
 }
