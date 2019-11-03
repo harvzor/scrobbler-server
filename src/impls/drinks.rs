@@ -23,15 +23,19 @@ impl Drinks {
             .filter(|drink| drink.deleted == show_deleted)
             .collect();
     }
-    pub fn add(&mut self, name: String) {
+    pub fn add(&mut self, name: String) -> usize {
+        let id = self.drinks.len() + 1;
+
         self.drinks.push(
             drink::Drink {
-                id: self.drinks.len() + 1,
+                id: id,
                 name: name,
                 count: 1,
                 deleted: false,
             }
         );
+
+        return id;
     }
     pub fn find_by_name(&mut self, name: String) -> Option<&mut drink::Drink> {
         for drink in self.drinks.iter_mut() {

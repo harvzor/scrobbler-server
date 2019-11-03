@@ -1,4 +1,6 @@
-#[derive(Debug)]
+use serde::{Serialize};
+
+#[derive(Serialize, Debug)]
 pub struct Drink {
     pub id: usize,
     pub name: String,

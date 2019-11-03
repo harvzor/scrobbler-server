@@ -64,7 +64,7 @@ fn menu_add_drink(drinks: &mut drinks::Drinks) {
 
     match drink {
         Some(_x) => println!("Drink already exists!"),
-        None => drinks.add(user_input),
+        None => {drinks.add(user_input);},
     }
 }
 

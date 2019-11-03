@@ -1,6 +1,7 @@
 #![feature(proc_macro_hygiene, decl_macro)]
 
 #[macro_use] extern crate rocket;
+#[macro_use] extern crate serde_derive;
 
 use std::sync::{Arc, Mutex};
 use std::thread;

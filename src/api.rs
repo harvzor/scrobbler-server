@@ -1,6 +1,10 @@
 use crate::impls::drinks;
+use crate::impls::drink;
+
 use std::sync::{Arc, Mutex};
+
 use rocket::State;
+use rocket_contrib::json::{Json};
 
 pub struct Api {
     drinks: Arc<Mutex<drinks::Drinks>>
@@ -18,21 +22,41 @@ fn drinks_get(drinks: State<Arc<Mutex<drinks::Drinks>>>) -> String {
     return format!("{:#?}", my_drinks.list(false));
 }
 
-// Should use body params.
+// // Should use body params.
+// #[post("/<name>")]
+// fn drink_post(name: String, drinks: State<Arc<Mutex<drinks::Drinks>>>) -> Json<&drink::Drink> {
+//     let my_drinks = &mut drinks.lock().unwrap();
+
+//     let id = my_drinks.add(name);
+
+//     let drink = my_drinks.find_by_id(id)
+//         .unwrap();
+
+//     return Json(&drink);
+// }
+
 #[post("/<name>")]
 fn drink_post(name: String, drinks: State<Arc<Mutex<drinks::Drinks>>>) -> String {
     let my_drinks = &mut *drinks.lock().unwrap();
 
-    my_drinks.add(name);
+    let id = my_drinks.add(name);
 
-    return format!("{:#?}", my_drinks.find_by_id(1));
+    let drink = my_drinks.find_by_id(id)
+        .unwrap();
+
+    return serde_json::to_string(&drink).unwrap();
 }
 
 #[get("/<id>")]
 fn drink_get(id: usize, drinks: State<Arc<Mutex<drinks::Drinks>>>) -> String {
     let my_drinks = &mut *drinks.lock().unwrap();
 
-    return format!("{:#?}", my_drinks.find_by_id(id));
+    let drink = my_drinks.find_by_id(id);
+
+    match drink {
+        Some(_x) => return serde_json::to_string(&drink).unwrap(),
+        None => return format!(""),
+    }
 }
 
 // Should use body params.
