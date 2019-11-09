@@ -1,5 +1,3 @@
-use serde;
-
 #[derive(Serialize, Debug)]
 pub struct Drink {
     pub id: usize,
