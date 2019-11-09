@@ -1,5 +1,5 @@
-use core::impls::drinks;
-use core::impls::drink;
+use core::drinks;
+// use core::drink;
 
 use std::sync::{Arc, Mutex};
 

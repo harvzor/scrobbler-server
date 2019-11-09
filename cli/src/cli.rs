@@ -1,7 +1,7 @@
 use dialoguer::{theme::ColorfulTheme, Select, Input};
 use std::sync::{Arc, Mutex};
 
-use crate::impls::drinks;
+use crate::drinks;
 
 enum Action {
     ListDrinks,

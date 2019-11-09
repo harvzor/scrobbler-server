@@ -76,8 +76,7 @@ name = "cli"
 version = "0.1.0"
 dependencies = [
  "core 0.1.0",
- "rocket 0.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
- "rocket_contrib 0.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "dialoguer 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde 1.0.102 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde_derive 1.0.102 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde_json 1.0.41 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -359,6 +358,7 @@ version = "0.1.0"
 dependencies = [
  "api 0.1.0",
  "cli 0.1.0",
+ "core 0.1.0",
  "dialoguer 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "rocket 0.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
  "rocket_contrib 0.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
