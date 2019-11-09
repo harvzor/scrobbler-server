@@ -1,4 +1,4 @@
-use serde::{Serialize};
+use serde;
 
 #[derive(Serialize, Debug)]
 pub struct Drink {
