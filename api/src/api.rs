@@ -1,5 +1,5 @@
-use crate::impls::drinks;
-use crate::impls::drink;
+use core::impls::drinks;
+use core::impls::drink;
 
 use std::sync::{Arc, Mutex};
 

@@ -6,12 +6,12 @@
 use std::sync::{Arc, Mutex};
 use std::thread;
 
-mod impls;
-mod cli;
-mod api;
+use core;
+use cli;
+use api;
 
 fn main() {
-    let drinks = Arc::new(Mutex::new(impls::drinks::Drinks::new()));
+    let drinks = Arc::new(Mutex::new(core::drinks::Drinks::new()));
 
     let drinks_api = drinks.clone();
 
