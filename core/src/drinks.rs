@@ -1,6 +1,6 @@
 use crate::drink::Drink;
 
-#[derive(Serialize, Debug)]
+#[derive(Clone, Serialize, Debug)]
 pub struct Drinks {
     pub drinks: Vec<Drink>
 }

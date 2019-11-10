@@ -16,10 +16,18 @@ fn index() -> String {
 }
 
 #[get("/")]
-fn drinks_get(drinks: State<Arc<Mutex<drinks::Drinks>>>) -> String {
+fn drinks_get(drinks: State<Arc<Mutex<drinks::Drinks>>>) -> Json<Vec<drink::Drink>> {
     let my_drinks = &mut *drinks.lock().unwrap();
 
-    return format!("{:#?}", my_drinks.list(false));
+    return Json(
+        my_drinks
+            .list(false)
+            .iter_mut()
+            .map(|d| {
+                return d.clone();
+            })
+            .collect()
+    );
 }
 
 // // Should use body params.
@@ -61,7 +69,7 @@ fn drink_get(id: usize, drinks: State<Arc<Mutex<drinks::Drinks>>>) -> Option<Jso
 
 // Should use body params.
 #[patch("/<id>")]
-fn drink_patch(id: usize, drinks: State<Arc<Mutex<drinks::Drinks>>>) -> String {
+fn drink_patch(id: usize, drinks: State<Arc<Mutex<drinks::Drinks>>>) -> Option<Json<drink::Drink>> {
     let my_drinks = &mut *drinks.lock().unwrap();
 
     let drink = my_drinks.find_by_id_mut(id);
@@ -70,22 +78,18 @@ fn drink_patch(id: usize, drinks: State<Arc<Mutex<drinks::Drinks>>>) -> String {
         Some(d) => {
             d.increment();
 
-            return format!("{:#?}", d);
+            return Some(Json(d.clone()));
         },
-        None => {
-            return format!("Not found.");
-        },
+        None => None,
     }
 }
 
 // Implement soft/hard delete?
 #[delete("/<id>")]
-fn drink_delete(id: usize, drinks: State<Arc<Mutex<drinks::Drinks>>>) -> String {
+fn drink_delete(id: usize, drinks: State<Arc<Mutex<drinks::Drinks>>>) {
     let my_drinks = &mut *drinks.lock().unwrap();
 
     my_drinks.delete_by_id(id, false);
-
-    return format!("Fertig.");
 }
 
 impl Api {
