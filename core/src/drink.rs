@@ -1,4 +1,4 @@
-#[derive(Serialize, Debug)]
+#[derive(Clone, Serialize, Debug)]
 pub struct Drink {
     pub id: usize,
     pub name: String,

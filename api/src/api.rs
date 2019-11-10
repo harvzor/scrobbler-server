@@ -1,5 +1,5 @@
 use core::drinks;
-// use core::drink;
+use core::drink;
 
 use std::sync::{Arc, Mutex};
 
@@ -48,14 +48,14 @@ fn drink_post(name: String, drinks: State<Arc<Mutex<drinks::Drinks>>>) -> String
 }
 
 #[get("/<id>")]
-fn drink_get(id: usize, drinks: State<Arc<Mutex<drinks::Drinks>>>) -> String {
+fn drink_get(id: usize, drinks: State<Arc<Mutex<drinks::Drinks>>>) -> Option<Json<drink::Drink>> {
     let my_drinks = &mut *drinks.lock().unwrap();
 
-    let drink = my_drinks.find_by_id(id);
+    let drink = my_drinks.find_by_id_clone(id);
 
     match drink {
-        Some(_x) => return serde_json::to_string(&drink).unwrap(),
-        None => return format!(""),
+        Some(d) => Some(Json(d)),
+        None => None,
     }
 }
 
