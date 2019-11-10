@@ -67,16 +67,6 @@ impl Drinks {
             None => return None,
         }
     }
-    pub fn find_by_id_clone(&mut self, id: usize) -> Option<Drink> {
-        let index = self.drinks
-            .iter()
-            .position(|x| x.id == id);
-
-        match index {
-            Some(i) => return Some(self.drinks[i].clone()),
-            None => return None,
-        }
-    }
     pub fn find_by_id_mut(&mut self, id: usize) -> Option<&mut Drink> {
         let index = self.drinks
             .iter()
