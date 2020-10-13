@@ -5,6 +5,15 @@ use std::sync::{Arc, Mutex};
 
 use rocket::State;
 use rocket_contrib::json::{Json};
+use rocket::http::Method;
+
+use rocket_cors::{
+    AllowedHeaders,
+    AllowedOrigins,
+    // Error,
+    Cors,
+    CorsOptions,
+};
 
 pub struct Api {
     drinks: Arc<Mutex<drinks::Drinks>>
@@ -92,6 +101,26 @@ fn drink_delete(id: usize, drinks: State<Arc<Mutex<drinks::Drinks>>>) {
     my_drinks.delete_by_id(id, false);
 }
 
+fn make_cors() -> Cors {
+    let allowed_origins = AllowedOrigins::some_exact(&[
+        "http://localhost:8080",
+    ]);
+
+    CorsOptions {
+        allowed_origins,
+        allowed_methods: vec![Method::Get].into_iter().map(From::from).collect(),
+        allowed_headers: AllowedHeaders::some(&[
+            "Authorization",
+            "Accept",
+            "Access-Control-Allow-Origin",
+        ]),
+        allow_credentials: true,
+        ..Default::default()
+    }
+    .to_cors()
+    .expect("error while building CORS")
+}
+
 impl Api {
     pub fn new(drinks: Arc<Mutex<drinks::Drinks>>) -> Api {
         return Api {
@@ -103,6 +132,7 @@ impl Api {
             .mount("/", routes![index])
             .mount("/drinks", routes![drinks_get, drink_post, drink_get, drink_patch, drink_delete])
             .manage(self.drinks.clone())
+            .attach(make_cors())
             .launch();
     }
 }
