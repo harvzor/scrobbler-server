@@ -4,3 +4,4 @@ extern crate rocket;
 extern crate rocket_cors;
 
 pub mod api;
+pub mod DrinksController;
