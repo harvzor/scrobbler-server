@@ -3,6 +3,7 @@ pub struct Drink {
     pub id: usize,
     pub name: String,
     pub count: u32,
+    pub colour: String,
     pub deleted: bool,
 }
 

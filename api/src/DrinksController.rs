@@ -40,7 +40,7 @@ fn drinks_get(drinks: State<Arc<Mutex<drinks::Drinks>>>) -> Json<Vec<drink::Drin
 fn drink_post(name: String, drinks: State<Arc<Mutex<drinks::Drinks>>>) -> Json<drink::Drink> {
     let my_drinks = &mut *drinks.lock().unwrap();
 
-    let id = my_drinks.add(name);
+    let id = my_drinks.add(name, "red".to_string());
 
     let drink = my_drinks.find_by_id(id)
         .unwrap();

@@ -55,16 +55,23 @@ fn menu_list_drinks(drinks: &mut drinks::Drinks) {
 }
 
 fn menu_add_drink(drinks: &mut drinks::Drinks) {
-    let user_input: String = Input::new()
+    let drink_name: String = Input::new()
         .with_prompt("Drink name")
         .interact()
         .unwrap();
 
-    let drink = drinks.find_by_name(user_input.clone());
+    let drink = drinks.find_by_name(drink_name.clone());
 
     match drink {
         Some(_x) => println!("Drink already exists!"),
-        None => {drinks.add(user_input);},
+        None => {
+            let drink_colour: String = Input::new()
+                .with_prompt("Drink colour")
+                .interact()
+                .unwrap();
+
+            drinks.add(drink_name, drink_colour);
+        },
     }
 }
 

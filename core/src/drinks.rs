@@ -23,7 +23,7 @@ impl Drinks {
             .filter(|drink| drink.deleted == show_deleted)
             .collect();
     }
-    pub fn add(&mut self, name: String) -> usize {
+    pub fn add(&mut self, name: String, colour: String) -> usize {
         let id = self.drinks.len() + 1;
 
         self.drinks.push(
@@ -31,6 +31,7 @@ impl Drinks {
                 id: id,
                 name: name,
                 count: 1,
+                colour: colour,
                 deleted: false,
             }
         );
