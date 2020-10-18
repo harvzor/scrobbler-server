@@ -3,23 +3,9 @@ use std::sync::{Arc, Mutex};
 use rocket_contrib::json::{Json};
 use rocket::State;
 use rocket::Route;
-// use rocket::http::Method;
 
 use core::drinks;
 use core::drink;
-
-// // Should use body params.
-// #[post("/<name>")]
-// fn drink_post(name: String, drinks: State<Arc<Mutex<drinks::Drinks>>>) -> Json<&drink::Drink> {
-//     let my_drinks = &mut drinks.lock().unwrap();
-
-//     let id = my_drinks.add(name);
-
-//     let drink = my_drinks.find_by_id(id)
-//         .unwrap();
-
-//     return Json(&drink);
-// }
 
 #[get("/")]
 fn drinks_get(drinks: State<Arc<Mutex<drinks::Drinks>>>) -> Json<Vec<drink::Drink>> {
@@ -36,6 +22,7 @@ fn drinks_get(drinks: State<Arc<Mutex<drinks::Drinks>>>) -> Json<Vec<drink::Drin
     );
 }
 
+// Should use body params.
 #[post("/<name>")]
 fn drink_post(name: String, drinks: State<Arc<Mutex<drinks::Drinks>>>) -> Json<drink::Drink> {
     let my_drinks = &mut *drinks.lock().unwrap();
@@ -88,7 +75,7 @@ fn drink_delete(id: usize, drinks: State<Arc<Mutex<drinks::Drinks>>>) {
 pub struct DrinksController {
 }
 
-impl DrinksController {
+pub impl DrinksController {
     pub fn get_routes() -> Vec<Route> {
         return routes![drinks_get, drink_post, drink_get, drink_patch, drink_delete];
     }
