@@ -54,7 +54,7 @@ impl Api {
     pub fn run(&self) {
         rocket::ignite()
             .mount("/", routes![index])
-            .mount("/drinks", drinks_controller::DrinksController::get_routes())
+            .mount("/drinks", drinks_controller::get_routes())
             .manage(self.drinks.clone())
             .attach(make_cors())
             .launch();

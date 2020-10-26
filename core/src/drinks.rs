@@ -30,7 +30,7 @@ impl Drinks {
             Drink {
                 id: id,
                 name: name,
-                count: 1,
+                count: 0,
                 colour: colour,
                 deleted: false,
             }

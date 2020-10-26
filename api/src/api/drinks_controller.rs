@@ -72,11 +72,6 @@ fn drink_delete(id: usize, drinks: State<Arc<Mutex<drinks::Drinks>>>) {
     my_drinks.delete_by_id(id, false);
 }
 
-pub struct DrinksController {
-}
-
-impl DrinksController {
-    pub fn get_routes() -> Vec<Route> {
-        return routes![drinks_get, drink_post, drink_get, drink_patch, drink_delete];
-    }
+pub fn get_routes() -> Vec<Route> {
+    return routes![drinks_get, drink_post, drink_get, drink_patch, drink_delete];
 }
