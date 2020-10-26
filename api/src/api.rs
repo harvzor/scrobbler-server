@@ -6,7 +6,7 @@ use rocket::http::Method;
 
 use core::drinks;
 
-use crate::DrinksController::DrinksController;
+mod drinks_controller;
 
 use rocket_cors::{
     AllowedHeaders,
@@ -54,7 +54,7 @@ impl Api {
     pub fn run(&self) {
         rocket::ignite()
             .mount("/", routes![index])
-            .mount("/drinks", DrinksController::get_routes())
+            .mount("/drinks", drinks_controller::DrinksController::get_routes())
             .manage(self.drinks.clone())
             .attach(make_cors())
             .launch();
