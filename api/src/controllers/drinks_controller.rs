@@ -4,11 +4,11 @@ use rocket_contrib::json::{Json};
 use rocket::State;
 use rocket::Route;
 
-use core::drinks;
+use core::drinks_repository::DrinksRepository;
 use core::drink;
 
 #[get("/")]
-fn drinks_get(drinks: State<Arc<Mutex<drinks::Drinks>>>) -> Json<Vec<drink::Drink>> {
+fn drinks_get(drinks: State<Arc<Mutex<DrinksRepository>>>) -> Json<Vec<drink::Drink>> {
     let my_drinks = &mut *drinks.lock().unwrap();
 
     return Json(
@@ -24,7 +24,7 @@ fn drinks_get(drinks: State<Arc<Mutex<drinks::Drinks>>>) -> Json<Vec<drink::Drin
 
 // Should use body params.
 #[post("/<name>")]
-fn drink_post(name: String, drinks: State<Arc<Mutex<drinks::Drinks>>>) -> Json<drink::Drink> {
+fn drink_post(name: String, drinks: State<Arc<Mutex<DrinksRepository>>>) -> Json<drink::Drink> {
     let my_drinks = &mut *drinks.lock().unwrap();
 
     let id = my_drinks.add(name, "red".to_string());
@@ -36,7 +36,7 @@ fn drink_post(name: String, drinks: State<Arc<Mutex<drinks::Drinks>>>) -> Json<d
 }
 
 #[get("/<id>")]
-fn drink_get(id: usize, drinks: State<Arc<Mutex<drinks::Drinks>>>) -> Option<Json<drink::Drink>> {
+fn drink_get(id: usize, drinks: State<Arc<Mutex<DrinksRepository>>>) -> Option<Json<drink::Drink>> {
     let my_drinks = &mut *drinks.lock().unwrap();
 
     let drink = my_drinks.find_by_id(id);
@@ -49,7 +49,7 @@ fn drink_get(id: usize, drinks: State<Arc<Mutex<drinks::Drinks>>>) -> Option<Jso
 
 // Should use body params.
 #[patch("/<id>")]
-fn drink_patch(id: usize, drinks: State<Arc<Mutex<drinks::Drinks>>>) -> Option<Json<drink::Drink>> {
+fn drink_patch(id: usize, drinks: State<Arc<Mutex<DrinksRepository>>>) -> Option<Json<drink::Drink>> {
     let my_drinks = &mut *drinks.lock().unwrap();
 
     let drink = my_drinks.find_by_id_mut(id);
@@ -66,7 +66,7 @@ fn drink_patch(id: usize, drinks: State<Arc<Mutex<drinks::Drinks>>>) -> Option<J
 
 // Implement soft/hard delete?
 #[delete("/<id>")]
-fn drink_delete(id: usize, drinks: State<Arc<Mutex<drinks::Drinks>>>) {
+fn drink_delete(id: usize, drinks: State<Arc<Mutex<DrinksRepository>>>) {
     let my_drinks = &mut *drinks.lock().unwrap();
 
     my_drinks.delete_by_id(id, false);

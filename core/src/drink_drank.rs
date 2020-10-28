@@ -1,5 +1,6 @@
 use std::time::{SystemTime};
 
+/// An instance of something that was drink at some time.
 #[derive(Clone, Serialize, Debug)]
 pub struct DrinkDrank {
     pub id: usize,

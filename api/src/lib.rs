@@ -7,7 +7,7 @@ use std::sync::{Arc, Mutex};
 
 use rocket::http::Method;
 
-use core::drinks;
+use core::drinks_repository::DrinksRepository;
 
 mod controllers {
     pub mod drinks_controller;
@@ -22,7 +22,7 @@ use rocket_cors::{
 };
 
 pub struct Api {
-    drinks: Arc<Mutex<drinks::Drinks>>
+    drinks: Arc<Mutex<DrinksRepository>>
 }
 
 #[get("/")]
@@ -51,7 +51,7 @@ fn make_cors() -> Cors {
 }
 
 impl Api {
-    pub fn new(drinks: Arc<Mutex<drinks::Drinks>>) -> Api {
+    pub fn new(drinks: Arc<Mutex<DrinksRepository>>) -> Api {
         return Api {
             drinks: drinks
         };

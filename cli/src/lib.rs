@@ -1,4 +1,4 @@
-use core::drinks;
+use core::drinks_repository::DrinksRepository;
 use dialoguer::{theme::ColorfulTheme, Select, Input};
 use std::sync::{Arc, Mutex};
 
@@ -9,7 +9,7 @@ enum Action {
     DeleteDrink,
 }
 
-pub fn run(drinks: Arc<Mutex<drinks::Drinks>>) {
+pub fn run(drinks: Arc<Mutex<DrinksRepository>>) {
     let user_action = menu_get_action();
 
     let my_drinks = &mut drinks.lock().unwrap();
@@ -49,11 +49,11 @@ fn menu_get_action() -> Option<Action> {
     }
 }
 
-fn menu_list_drinks(drinks: &mut drinks::Drinks) {
+fn menu_list_drinks(drinks: &mut DrinksRepository) {
     println!("{:#?}", drinks.list(false));
 }
 
-fn menu_add_drink(drinks: &mut drinks::Drinks) {
+fn menu_add_drink(drinks: &mut DrinksRepository) {
     let drink_name: String = Input::new()
         .with_prompt("Drink name")
         .interact()
@@ -74,7 +74,7 @@ fn menu_add_drink(drinks: &mut drinks::Drinks) {
     }
 }
 
-fn menu_increment_drink(drinks: &mut drinks::Drinks) {
+fn menu_increment_drink(drinks: &mut DrinksRepository) {
     let mut drink_items = drinks.list_mut(false);
 
     if drink_items.len() == 0 {
@@ -98,7 +98,7 @@ fn menu_increment_drink(drinks: &mut drinks::Drinks) {
     drink_items[user_selection].increment();
 }
 
-fn menu_delete_drink(drinks: &mut drinks::Drinks) {
+fn menu_delete_drink(drinks: &mut DrinksRepository) {
     let drink_items = drinks.list_mut(false);
 
     if drink_items.len() == 0 {

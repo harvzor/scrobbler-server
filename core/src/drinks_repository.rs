@@ -1,13 +1,13 @@
 use crate::drink::Drink;
 
 #[derive(Clone, Serialize, Debug)]
-pub struct Drinks {
+pub struct DrinksRepository {
     pub drinks: Vec<Drink>
 }
 
-impl Drinks {
-    pub fn new() -> Drinks {
-        return Drinks {
+impl DrinksRepository {
+    pub fn new() -> DrinksRepository {
+        return DrinksRepository {
             drinks: vec![]
         }
     }
