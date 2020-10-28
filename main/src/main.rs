@@ -4,8 +4,8 @@ use std::sync::{Arc, Mutex};
 use std::thread;
 
 use core;
-use cli::cli::cli;
-use api::api::Api;
+use cli;
+use api::Api;
 
 fn main() {
     // Drinks is defined here as both the API and the cli are modifying the same object.
@@ -20,6 +20,6 @@ fn main() {
     });
 
     loop {
-        cli(drinks.clone());
+        cli::run(drinks.clone());
     }
 }
