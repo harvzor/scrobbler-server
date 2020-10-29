@@ -11,3 +11,36 @@ services:
       - "8000:8000"
     stdin_open: true
     tty: true
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:10.8-alpine
+    environment:
+      POSTGRES_USER: "username"
+      POSTGRES_PASSWORD: "password"
+    ports:
+      - "5432:5432"
+
+  pgadmin:
+    image: dpage/pgadmin4:4.11
+    ports:
+      - "11111:1111"
+    environment:
+      PGADMIN_LISTEN_PORT: "1111"
+      PGADMIN_DEFAULT_EMAIL: "pgadmin@example.com"
+      PGADMIN_DEFAULT_PASSWORD: "password"
+    depends_on:
+      - postgres
+
+  diesel-cli:
+    build:
+        context: .
+        dockerfile: ./Dockerfile.diesel-cli
+    stdin_open: true
+    tty: true
+    entrypoint: "bash"
+    volumes:
+      - ".:/app"
+    depends_on:
+      - postgres
