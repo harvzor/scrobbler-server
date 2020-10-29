@@ -1,0 +1,6 @@
+# FROM rust:latest
+FROM rustlang/rust:nightly
+
+WORKDIR /app
+
+ENTRYPOINT [ "bash" ]

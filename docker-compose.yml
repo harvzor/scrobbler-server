@@ -4,13 +4,24 @@ services:
   drinks-drunk:
     build:
       context: .
-      # target: runtime
-    # environment:
-      # foo: "bar"
     ports:
       - "8000:8000"
     stdin_open: true
     tty: true
+    depends_on:
+      - postgres
+
+  drinks-drunk-dev:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.dev
+    ports:
+      - "8000:8000"
+    stdin_open: true
+    tty: true
+    command: "cargo +nightly watch -x run"
+    volumes:
+      - ".:/app"
     depends_on:
       - postgres
 

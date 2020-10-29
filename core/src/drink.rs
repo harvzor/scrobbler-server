@@ -1,4 +1,4 @@
-#[derive(Clone, Serialize, Debug)]
+#[derive(Clone, Serialize, Debug, diesel::Queryable)]
 pub struct Drink {
     pub id: usize,
     pub name: String,

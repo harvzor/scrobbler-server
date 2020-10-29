@@ -4,11 +4,27 @@ An API for tracking drinks drunk.
 
 ## Running
 
-1. `cargo +nightly run`
+```
+cargo +nightly run
+```
+
+or
+
+```
+docker-compose up drinks-drunk
+```
 
 ## Watching and running
 
-1. `cargo +nightly watch -x run`
+```
+cargo +nightly watch -x run
+```
+
+or
+
+```
+docker-compose up drinks-drunk-dev
+```
 
 ## Running migrations
 
