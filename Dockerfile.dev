@@ -3,4 +3,6 @@ FROM rustlang/rust:nightly
 
 WORKDIR /app
 
+RUN cargo install cargo-watch
+
 ENTRYPOINT [ "bash" ]
