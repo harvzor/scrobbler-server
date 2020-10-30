@@ -12,3 +12,12 @@ impl Drink {
         // self.count = self.count + 1;
     }
 }
+
+use crate::schema::drinks;
+
+#[derive(Insertable)]
+#[table_name="drinks"]
+pub struct NewDrink<'a> {
+    pub name: &'a str,
+    pub colour: &'a str,
+}

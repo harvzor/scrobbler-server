@@ -3,7 +3,7 @@ use diesel::pg::PgConnection;
 use dotenv::dotenv;
 use std::env;
 
-use crate::drink::Drink;
+use crate::drink;
 use crate::schema::drinks::dsl::*;
 
 fn establish_connection() -> PgConnection {
@@ -26,12 +26,26 @@ impl Db {
             connection: establish_connection(),
         }
     }
-    pub fn get_drinks(&self) -> Vec<Drink> {
+    pub fn get_drinks(&self) -> Vec<drink::Drink> {
         let results = drinks
             .filter(deleted.eq(false))
-            .load::<Drink>(&self.connection)
+            .load::<drink::Drink>(&self.connection)
             .expect("Error loading drinks");
 
-        return results;
+        results
+    }
+    pub fn create_drink<'a>(&self, new_name: &'a str, new_colour: &'a str) -> drink::Drink {
+        use crate::schema::drinks;
+        use crate::drink::NewDrink;
+
+        let new_drink = NewDrink {
+            name: new_name,
+            colour: new_colour,
+        };
+
+        diesel::insert_into(drinks::table)
+            .values(&new_drink)
+            .get_result(&self.connection)
+            .expect("Error saving new drink")
     }
 }
