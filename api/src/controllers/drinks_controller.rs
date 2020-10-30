@@ -36,7 +36,7 @@ fn drink_post(name: String, drinks: State<Arc<Mutex<DrinksRepository>>>) -> Json
 }
 
 #[get("/<id>")]
-fn drink_get(id: usize, drinks: State<Arc<Mutex<DrinksRepository>>>) -> Option<Json<Drink>> {
+fn drink_get(id: i32, drinks: State<Arc<Mutex<DrinksRepository>>>) -> Option<Json<Drink>> {
     let my_drinks = &mut *drinks.lock().unwrap();
 
     let drink = my_drinks.find_by_id(id);
@@ -49,7 +49,7 @@ fn drink_get(id: usize, drinks: State<Arc<Mutex<DrinksRepository>>>) -> Option<J
 
 // Should use body params.
 #[patch("/<id>")]
-fn drink_patch(id: usize, drinks: State<Arc<Mutex<DrinksRepository>>>) -> Option<Json<Drink>> {
+fn drink_patch(id: i32, drinks: State<Arc<Mutex<DrinksRepository>>>) -> Option<Json<Drink>> {
     let my_drinks = &mut *drinks.lock().unwrap();
 
     let drink = my_drinks.find_by_id_mut(id);
@@ -66,7 +66,7 @@ fn drink_patch(id: usize, drinks: State<Arc<Mutex<DrinksRepository>>>) -> Option
 
 // Implement soft/hard delete?
 #[delete("/<id>")]
-fn drink_delete(id: usize, drinks: State<Arc<Mutex<DrinksRepository>>>) {
+fn drink_delete(id: i32, drinks: State<Arc<Mutex<DrinksRepository>>>) {
     let my_drinks = &mut *drinks.lock().unwrap();
 
     my_drinks.delete_by_id(id, false);

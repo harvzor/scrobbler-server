@@ -23,14 +23,14 @@ impl DrinksRepository {
             .filter(|drink| drink.deleted == show_deleted)
             .collect();
     }
-    pub fn add(&mut self, name: String, colour: String) -> usize {
-        let id = self.drinks.len() + 1;
+    pub fn add(&mut self, name: String, colour: String) -> i32 {
+        let id = self.drinks.len() as i32 + 1;
 
         self.drinks.push(
             Drink {
                 id: id,
                 name: name,
-                count: 0,
+                // count: 0,
                 colour: colour,
                 deleted: false,
             }
@@ -58,7 +58,7 @@ impl DrinksRepository {
 
     //     return None;
     // }
-    pub fn find_by_id(&mut self, id: usize) -> Option<&Drink> {
+    pub fn find_by_id(&mut self, id: i32) -> Option<&Drink> {
         let index = self.drinks
             .iter()
             .position(|x| x.id == id);
@@ -68,7 +68,7 @@ impl DrinksRepository {
             None => return None,
         }
     }
-    pub fn find_by_id_mut(&mut self, id: usize) -> Option<&mut Drink> {
+    pub fn find_by_id_mut(&mut self, id: i32) -> Option<&mut Drink> {
         let index = self.drinks
             .iter()
             .position(|x| x.id == id);
@@ -78,7 +78,7 @@ impl DrinksRepository {
             None => return None,
         }
     }
-    pub fn delete_by_id(&mut self, id: usize, hard_delete: bool) {
+    pub fn delete_by_id(&mut self, id: i32, hard_delete: bool) {
         let index = self.drinks
             .iter()
             .position(|x| x.id == id);

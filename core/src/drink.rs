@@ -1,14 +1,14 @@
-#[derive(Clone, Serialize, Debug, diesel::Queryable)]
+#[derive(Clone, Serialize, Debug, Queryable)]
 pub struct Drink {
-    pub id: usize,
+    pub id: i32,
     pub name: String,
-    pub count: u32,
+    // count: u32,
     pub colour: String,
     pub deleted: bool,
 }
 
 impl Drink {
     pub fn increment(&mut self) {
-        self.count = self.count + 1;
+        // self.count = self.count + 1;
     }
 }
