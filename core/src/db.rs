@@ -3,7 +3,7 @@ use diesel::pg::PgConnection;
 use dotenv::dotenv;
 use std::env;
 
-use crate::models::Drink;
+use crate::models::drink::Drink;
 use crate::schema::drinks::dsl::*;
 
 fn establish_connection() -> PgConnection {
@@ -36,7 +36,7 @@ impl Db {
     }
     pub fn create_drink<'a>(&self, new_name: &'a str, new_colour: &'a str) -> Drink {
         use crate::schema::drinks;
-        use crate::models::NewDrink;
+        use crate::models::drink::NewDrink;
 
         let new_drink = NewDrink {
             name: new_name,

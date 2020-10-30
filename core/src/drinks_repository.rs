@@ -1,4 +1,4 @@
-use crate::models::Drink;
+use crate::models::drink::Drink;
 
 #[derive(Clone, Serialize, Debug)]
 pub struct DrinksRepository {

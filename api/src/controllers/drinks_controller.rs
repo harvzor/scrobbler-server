@@ -5,7 +5,7 @@ use rocket::State;
 use rocket::Route;
 
 use core::drinks_repository::DrinksRepository;
-use core::models::Drink;
+use core::models::drink::Drink;
 
 #[get("/")]
 fn drinks_get(drinks: State<Arc<Mutex<DrinksRepository>>>) -> Json<Vec<Drink>> {
