@@ -48,4 +48,10 @@ impl Db {
             .get_result(&self.connection)
             .expect("Error saving new drink")
     }
+    pub fn delete_drink(&self, drink_id: i32) -> Drink {
+        diesel::update(drinks.find(drink_id))
+            .set(deleted.eq(true))
+            .get_result::<Drink>(&self.connection)
+            .expect(&format!("Unable to find drink {}", drink_id))
+    }
 }
