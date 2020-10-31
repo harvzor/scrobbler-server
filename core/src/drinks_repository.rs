@@ -1,16 +1,66 @@
-use crate::models::drink::Drink;
+use diesel::prelude::*;
 
-#[derive(Clone, Serialize, Debug)]
+use crate::models::drink::Drink;
+use crate::db::Db;
+
 pub struct DrinksRepository {
-    pub drinks: Vec<Drink>
+    pub drinks: Vec<Drink>,
+    pub db: Db,
 }
 
 impl DrinksRepository {
     pub fn new() -> DrinksRepository {
-        return DrinksRepository {
-            drinks: vec![]
+        DrinksRepository {
+            drinks: vec![],
+            db: Db::new(),
         }
     }
+    pub fn get_drinks(&self, drink_deleted: bool) -> Vec<Drink> {
+        use crate::schema::drinks::dsl::*;
+
+        let results = drinks
+            .filter(deleted.eq(drink_deleted))
+            .load::<Drink>(&self.db.connection)
+            .expect("Error loading drinks");
+
+        results
+    }
+    pub fn create_drink<'a>(&self, name: &'a str, colour: &'a str) -> Drink {
+        use crate::schema::drinks;
+        use crate::models::drink::NewDrink;
+
+        let new_drink = NewDrink {
+            name: name,
+            colour: colour,
+        };
+
+        diesel::insert_into(drinks::table)
+            .values(&new_drink)
+            .get_result(&self.db.connection)
+            .expect("Error saving new drink")
+    }
+    pub fn delete_drink(&self, drink_id: i32, hard_delete: bool) -> Option<Drink> {
+        use crate::schema::drinks::dsl::*;
+
+        match hard_delete {
+            true => {
+                diesel::delete(drinks.find(id))
+                    .execute(&self.db.connection)
+                    .expect("Error deleted posts");
+
+                return None;
+            },
+            false => {
+                let drink = diesel::update(drinks.find(id))
+                    .set(deleted.eq(true))
+                    .get_result::<Drink>(&self.db.connection)
+                    .expect(&format!("Unable to find drink {}", drink_id));
+
+                return Some(drink);
+            },
+        }
+    }
+
     pub fn list(&self, show_deleted: bool) -> Vec<&Drink> {
         return self.drinks
             .iter()

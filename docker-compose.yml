@@ -19,7 +19,8 @@ services:
       - "8000:8000"
     stdin_open: true
     tty: true
-    entrypoint: "cargo +nightly watch --poll -x run"
+    entrypoint: "bash"
+    # entrypoint: "cargo +nightly watch --poll -x run"
     # `-poll` option is needed because of this issue: https://stackoverflow.com/questions/52996052/node-watch-on-a-docker-compose-volume-does-not-register-delete-events
     volumes:
       - ".:/app"

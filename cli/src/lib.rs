@@ -50,7 +50,7 @@ fn menu_get_action() -> Option<Action> {
 }
 
 fn menu_list_drinks(drinks: &mut DrinksRepository) {
-    println!("{:#?}", drinks.list(false));
+    println!("{:#?}", drinks.get_drinks(false));
 }
 
 fn menu_add_drink(drinks: &mut DrinksRepository) {
@@ -69,13 +69,13 @@ fn menu_add_drink(drinks: &mut DrinksRepository) {
                 .interact()
                 .unwrap();
 
-            drinks.add(drink_name, drink_colour);
+            drinks.create_drink(&drink_name, &drink_colour);
         },
     }
 }
 
 fn menu_increment_drink(drinks: &mut DrinksRepository) {
-    let mut drink_items = drinks.list_mut(false);
+    let mut drink_items = drinks.get_drinks(false);
 
     if drink_items.len() == 0 {
         println!("No drinks to increment!");
@@ -99,7 +99,7 @@ fn menu_increment_drink(drinks: &mut DrinksRepository) {
 }
 
 fn menu_delete_drink(drinks: &mut DrinksRepository) {
-    let drink_items = drinks.list_mut(false);
+    let drink_items = drinks.get_drinks(false);
 
     if drink_items.len() == 0 {
         println!("No drinks to delete!");
@@ -121,5 +121,5 @@ fn menu_delete_drink(drinks: &mut DrinksRepository) {
 
     let id = drink_items[user_selection].id;
 
-    drinks.delete_by_id(id, false);
+    drinks.delete_drink(id, false);
 }

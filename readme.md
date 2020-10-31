@@ -23,7 +23,9 @@ cargo +nightly watch -x run
 or
 
 ```
-docker-compose up drinks-drunk-dev
+docker-compose up -d drinks-drunk-dev
+docker-compose exec drinks-drunk-dev bash
+# cargo +nightly watch --poll -x run
 ```
 
 ## Running migrations
