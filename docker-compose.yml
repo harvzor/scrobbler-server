@@ -20,7 +20,7 @@ services:
     stdin_open: true
     tty: true
     # entrypoint: "bash"
-    command: "cargo +nightly watch -x run"
+    entrypoint: "cargo +nightly watch -x run"
     volumes:
       - ".:/app"
     depends_on:
