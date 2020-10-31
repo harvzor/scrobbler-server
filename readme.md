@@ -23,12 +23,8 @@ cargo +nightly watch -x run
 or
 
 ```
-docker-compose up -d drinks-drunk-dev
-docker-compose exec drinks-drunk-dev bash
-# cargo +nightly watch --poll -x run
+docker-compose up drinks-drunk-dev
 ```
-
-`-poll` option is needed because of this issue: https://stackoverflow.com/questions/52996052/node-watch-on-a-docker-compose-volume-does-not-register-delete-events
 
 ## Running migrations
 
