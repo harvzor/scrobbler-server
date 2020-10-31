@@ -3,6 +3,6 @@ FROM rustlang/rust:nightly
 
 COPY . .
 
-RUN cargo install --path .
+RUN cargo install --path main
 
-CMD ["drinks-drunk"]
+CMD ["cargo run"]

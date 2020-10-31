@@ -60,85 +60,32 @@ impl DrinksRepository {
             },
         }
     }
+    pub fn find_by_id(&mut self, drink_id: i32) -> Option<Drink> {
+        use crate::schema::drinks::dsl::*;
 
-    pub fn list(&self, show_deleted: bool) -> Vec<&Drink> {
-        return self.drinks
-            .iter()
-            .filter(|drink| drink.deleted == show_deleted)
-            .collect();
-    }
-    pub fn list_mut(&mut self, show_deleted: bool) -> Vec<&mut Drink> {
-        return self.drinks
-            .iter_mut()
-            .filter(|drink| drink.deleted == show_deleted)
-            .collect();
-    }
-    pub fn add(&mut self, name: String, colour: String) -> i32 {
-        let id = self.drinks.len() as i32 + 1;
+        let drink = drinks
+            .find(drink_id)
+            .first::<Drink>(&self.db.connection);
 
-        self.drinks.push(
-            Drink {
-                id: id,
-                name: name,
-                // count: 0,
-                colour: colour,
-                deleted: false,
+        match drink {
+            Ok(d) => {
+                return Some(d);
             }
-        );
-
-        return id;
-    }
-    pub fn find_by_name(&mut self, name: String) -> Option<&mut Drink> {
-        for drink in self.drinks.iter_mut() {
-            if name == drink.name {
-                return Some(drink);
-            }
-        }
-
-        return None;
-    }
-    // pub fn find_by_index(&mut self, index: usize, include_deleted: bool) -> Option<&mut Drink> {
-    //     let mut drinks = self.list_mut(include_deleted);
-
-    //     for (i, drink) in drinks.iter_mut().enumerate() {
-    //         if i == index {
-    //             return Some(drink);
-    //         }
-    //     }
-
-    //     return None;
-    // }
-    pub fn find_by_id(&mut self, id: i32) -> Option<&Drink> {
-        let index = self.drinks
-            .iter()
-            .position(|x| x.id == id);
-
-        match index {
-            Some(i) => return Some(&self.drinks[i]),
-            None => return None,
+            Err(_) => return None,
         }
     }
-    pub fn find_by_id_mut(&mut self, id: i32) -> Option<&mut Drink> {
-        let index = self.drinks
-            .iter()
-            .position(|x| x.id == id);
+    pub fn find_by_name(&mut self, drink_name: String) -> Option<Drink> {
+        use crate::schema::drinks::dsl::*;
 
-        match index {
-            Some(i) => return Some(&mut self.drinks[i]),
-            None => return None,
-        }
-    }
-    pub fn delete_by_id(&mut self, id: i32, hard_delete: bool) {
-        let index = self.drinks
-            .iter()
-            .position(|x| x.id == id);
+        let drink = drinks
+            .filter(name.eq(drink_name))
+            .first::<Drink>(&self.db.connection);
 
-        match index {
-            Some(i) => match hard_delete {
-                true => {self.drinks.remove(i);},
-                false => {self.drinks[i].deleted = true;},
+        match drink {
+            Ok(d) => {
+                return Some(d);
             }
-            None => panic!("Drink does not exist"),
+            Err(_) => return None,
         }
     }
 }

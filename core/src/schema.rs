@@ -1,6 +1,6 @@
 table! {
     drinks (id) {
-        id -> Integer,
+        id -> Int4,
         name -> Varchar,
         colour -> Varchar,
         deleted -> Bool,
