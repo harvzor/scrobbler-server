@@ -4,14 +4,12 @@ use crate::models::drink::Drink;
 use crate::db::Db;
 
 pub struct DrinksRepository {
-    pub drinks: Vec<Drink>,
     pub db: Db,
 }
 
 impl DrinksRepository {
     pub fn new() -> DrinksRepository {
         DrinksRepository {
-            drinks: vec![],
             db: Db::new(),
         }
     }

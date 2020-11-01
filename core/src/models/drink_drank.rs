@@ -1,25 +1,27 @@
-use std::time::{SystemTime, UNIX_EPOCH};
-
 /// An instance of something that was drink at some time.
-#[derive(Clone, Serialize, Debug)]
+#[derive(Clone, Serialize, Debug, Queryable)]
 pub struct DrinkDrank {
-    pub id: usize,
-    pub drink_id: usize,
+    pub id: i32,
+    pub drink_id: i32,
     /// When it was drank, as seconds since the unix epoch.
-    pub timestamp: u64,
+    pub drank_timestamp: chrono::NaiveDateTime,
 }
 
 impl DrinkDrank {
-    pub fn create(drink_id: usize) -> DrinkDrank {
-        let start = SystemTime::now();
-        let since_the_epoch = start
-            .duration_since(UNIX_EPOCH)
-            .expect("Time went backwards");
-
+    pub fn create(drink_id: i32) -> DrinkDrank {
         DrinkDrank {
             id: 0,
             drink_id: drink_id,
-            timestamp: since_the_epoch.as_secs(),
+            drank_timestamp: chrono::Utc::now().naive_local(),
         }
     }
+}
+
+use crate::schema::drink_dranks;
+
+#[derive(Insertable)]
+#[table_name="drink_dranks"]
+pub struct NewDrinkDrank {
+    pub drink_id: i32,
+    pub drank_timestamp: chrono::NaiveDateTime
 }
