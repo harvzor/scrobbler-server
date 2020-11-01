@@ -1,6 +1,6 @@
 use core::drinks_repository::DrinksRepository;
+use core::drink_dranks_repository::DrinkDranksRepository;
 use dialoguer::{theme::ColorfulTheme, Select, Input};
-use std::sync::{Arc, Mutex};
 
 enum Action {
     ListDrinks,
@@ -9,17 +9,17 @@ enum Action {
     DeleteDrink,
 }
 
-pub fn run(drinks: Arc<Mutex<DrinksRepository>>) {
+pub fn run() {
+    let drink_dranks_repository = DrinkDranksRepository::new();
+    let mut drinks = DrinksRepository::new();
     let user_action = menu_get_action();
-
-    let my_drinks = &mut drinks.lock().unwrap();
 
     match user_action {
         Some(action) => match action {
-            Action::ListDrinks => menu_list_drinks(my_drinks),
-            Action::AddDrink => menu_add_drink(my_drinks),
-            Action::IncrementDrink => menu_increment_drink(my_drinks),
-            Action::DeleteDrink => menu_delete_drink(my_drinks),
+            Action::ListDrinks => menu_list_drinks(&mut drinks),
+            Action::AddDrink => menu_add_drink(&mut drinks),
+            Action::IncrementDrink => menu_increment_drink(&mut drinks, drink_dranks_repository),
+            Action::DeleteDrink => menu_delete_drink(&mut drinks),
         },
         None => println!("??")
     }
@@ -74,16 +74,16 @@ fn menu_add_drink(drinks: &mut DrinksRepository) {
     }
 }
 
-fn menu_increment_drink(drinks: &mut DrinksRepository) {
-    let mut drink_items = drinks.get_drinks(false);
+fn menu_increment_drink(drinks_repository: &DrinksRepository, drink_dranks_repository: DrinkDranksRepository) {
+    let drinks = drinks_repository.get_drinks(false);
 
-    if drink_items.len() == 0 {
+    if drinks.len() == 0 {
         println!("No drinks to increment!");
 
         return;
     }
 
-    let options: Vec<&String> = drink_items
+    let options: Vec<&String> = drinks
         .iter()
         .map(|x| &x.name)
         .collect();
@@ -93,9 +93,9 @@ fn menu_increment_drink(drinks: &mut DrinksRepository) {
         .default(0)
         .items(&options[..])
         .interact()
-        .unwrap();
+        .unwrap() as i32;
 
-    drink_items[user_selection].increment();
+    drink_dranks_repository.create_drink_drank(user_selection);
 }
 
 fn menu_delete_drink(drinks: &mut DrinksRepository) {

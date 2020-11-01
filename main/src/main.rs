@@ -20,6 +20,6 @@ fn main() {
     });
 
     loop {
-        cli::run(drinks.clone());
+        cli::run();
     }
 }

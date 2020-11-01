@@ -8,9 +8,6 @@ pub struct Drink {
 }
 
 impl Drink {
-    pub fn increment(&mut self) {
-        // self.count = self.count + 1;
-    }
 }
 
 use crate::schema::drinks;

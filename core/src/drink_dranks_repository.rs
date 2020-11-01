@@ -13,7 +13,7 @@ impl DrinkDranksRepository {
             db: Db::new(),
         }
     }
-    pub fn get_drink_dranks(&self) -> Vec<DrinkDrink> {
+    pub fn get_drink_dranks(&self) -> Vec<DrinkDrank> {
         use crate::schema::drink_dranks::dsl::*;
 
         let results = drink_dranks
@@ -22,12 +22,13 @@ impl DrinkDranksRepository {
 
         results
     }
-    pub fn create_drink_drank(&self, drink_id: i32) {
+    pub fn create_drink_drank(&self, drink_id: i32) -> DrinkDrank {
         use crate::schema::drink_dranks;
-        use crate::models::drink::NewDrinkDrank;
+        use crate::models::drink_drank::NewDrinkDrank;
 
         let new_drink_drank = NewDrinkDrank {
             drink_id: drink_id,
+            drank_timestamp: chrono::Utc::now().naive_local(),
         };
 
         diesel::insert_into(drink_dranks::table)
@@ -35,14 +36,12 @@ impl DrinkDranksRepository {
             .get_result(&self.db.connection)
             .expect("Error saving new drink drank")
     }
-    pub fn get_drink_dranks_for_drink(&self, drink_drank_drink_id: i32) -> Vec<DrinkDrink> {
+    pub fn get_drink_dranks_for_drink(&self, drink_drank_drink_id: i32) -> Vec<DrinkDrank> {
         use crate::schema::drink_dranks::dsl::*;
 
-        let results = drink_dranks
+        drink_dranks
             .filter(drink_id.eq(drink_drank_drink_id))
             .load::<DrinkDrank>(&self.db.connection)
-            .expect("Error loading drink dranks");
-
-        results
+            .expect("Error loading drink dranks")
     }
 }

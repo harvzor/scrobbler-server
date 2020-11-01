@@ -9,4 +9,5 @@ pub mod models {
 
 pub mod schema;
 pub mod drinks_repository;
+pub mod drink_dranks_repository;
 pub mod db;
