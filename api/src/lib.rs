@@ -31,9 +31,11 @@ fn index() -> String {
 }
 
 fn make_cors() -> Cors {
-    let allowed_origins = AllowedOrigins::some_exact(&[
-        "http://localhost:8080",
-    ]);
+    // let allowed_origins = AllowedOrigins::some_exact(&[
+    //     "http://localhost:8080",
+    // ]);
+
+    let allowed_origins = AllowedOrigins::all();
 
     CorsOptions {
         allowed_origins,
