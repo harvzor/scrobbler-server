@@ -58,7 +58,7 @@ impl DrinksRepository {
             },
         }
     }
-    pub fn find_by_id(&mut self, drink_id: i32) -> Option<Drink> {
+    pub fn find_by_id(&self, drink_id: i32) -> Option<Drink> {
         use crate::schema::drinks::dsl::*;
 
         let drink = drinks
@@ -72,7 +72,7 @@ impl DrinksRepository {
             Err(_) => return None,
         }
     }
-    pub fn find_by_name(&mut self, drink_name: String) -> Option<Drink> {
+    pub fn find_by_name(&self, drink_name: &String) -> Option<Drink> {
         use crate::schema::drinks::dsl::*;
 
         let drink = drinks

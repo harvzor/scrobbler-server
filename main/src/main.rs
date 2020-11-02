@@ -4,7 +4,7 @@ use std::sync::{Arc, Mutex};
 use std::thread;
 
 use core;
-use cli;
+use cli::Cli;
 use api::Api;
 
 fn main() {
@@ -19,7 +19,9 @@ fn main() {
             .run();
     });
 
+    let cli = Cli::new();
+
     loop {
-        cli::run();
+        cli.run();
     }
 }
