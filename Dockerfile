@@ -1,8 +1,9 @@
-# FROM rust:latest
 FROM rustlang/rust:nightly
+
+WORKDIR /app
 
 COPY . .
 
-RUN cargo install --path main
+RUN cargo build
 
 CMD ["cargo run"]

@@ -11,7 +11,7 @@ cargo +nightly run
 or
 
 ```
-docker-compose up drinks-drunk
+docker-compose run --rm --service-ports drinks-drunk
 ```
 
 ## Watching and running
@@ -23,9 +23,7 @@ cargo +nightly watch -x run
 or
 
 ```
-docker-compose up -d drinks-drunk-dev
-docker-compose exec drinks-drunk-dev bash
-# cargo +nightly watch --poll -x run
+docker-compose run --rm --service-ports drinks-drunk-dev
 ```
 
 ## Running migrations
@@ -35,8 +33,7 @@ This project is using [Diesel](http://diesel.rs/) as the ORM.
 I didn't want to install Postgres on my system so I could use the Diesel CLI, so it's dockerized.
 
 ```
-docker-compose up -d diesel-cli
-docker-compose exec diesel-cli bash
+docker-compose run --rm diesel-cli
 # cd core
 # diesel setup
 # diesel migration run

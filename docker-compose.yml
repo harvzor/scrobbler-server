@@ -5,10 +5,10 @@ services:
     build:
       context: .
     ports:
-      - "8000:8000"
-    stdin_open: true
-    tty: true
-    command: "bash"
+      - 8000:8000
+    # stdin_open: true
+    # tty: true
+    command: "cargo run"
     depends_on:
       - postgres
 
@@ -17,14 +17,13 @@ services:
       context: .
       dockerfile: ./Dockerfile.dev
     ports:
-      - "8000:8000"
+      - 8000:8000
     stdin_open: true
     tty: true
-    entrypoint: "bash"
-    # entrypoint: "cargo +nightly watch --poll -x run"
+    entrypoint: "cargo +nightly watch --poll -x run"
     # `-poll` option is needed because of this issue: https://stackoverflow.com/questions/52996052/node-watch-on-a-docker-compose-volume-does-not-register-delete-events
     volumes:
-      - ".:/app"
+      - ./:/app
     depends_on:
       - postgres
 
@@ -39,7 +38,7 @@ services:
   pgadmin:
     image: dpage/pgadmin4:4.11
     ports:
-      - "11111:1111"
+      - 11111:1111
     environment:
       PGADMIN_LISTEN_PORT: "1111"
       PGADMIN_DEFAULT_EMAIL: "pgadmin@example.com"
@@ -55,6 +54,6 @@ services:
     tty: true
     entrypoint: "bash"
     volumes:
-      - ".:/app"
+      - ./:/app
     depends_on:
       - postgres
