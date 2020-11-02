@@ -1,4 +1,4 @@
-#[derive(Clone, Serialize, Debug, Queryable)]
+#[derive(Clone, Debug, Queryable)]
 pub struct Drink {
     pub id: i32,
     pub name: String,

@@ -1,7 +1,8 @@
 #![feature(proc_macro_hygiene, decl_macro)]
-#[macro_use] 
-extern crate rocket;
+#[macro_use] extern crate rocket;
 extern crate rocket_cors;
+
+#[macro_use] extern crate serde_derive;
 
 use std::sync::{Arc, Mutex};
 
@@ -11,6 +12,10 @@ use core::drinks_repository::DrinksRepository;
 
 mod controllers {
     pub mod drinks_controller;
+}
+
+mod dtos {
+    pub mod drink_dto;
 }
 
 use rocket_cors::{

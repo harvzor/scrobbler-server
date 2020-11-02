@@ -1,5 +1,5 @@
 /// An instance of something that was drink at some time.
-#[derive(Clone, Serialize, Debug, Queryable)]
+#[derive(Clone, Debug, Queryable)]
 pub struct DrinkDrank {
     pub id: i32,
     pub drink_id: i32,

@@ -5,10 +5,11 @@ use rocket::State;
 use rocket::Route;
 
 use core::drinks_repository::DrinksRepository;
-use core::models::drink::Drink;
+
+use crate::dtos::drink_dto::DrinkDto;
 
 #[get("/")]
-fn drinks_get(drinks: State<Arc<Mutex<DrinksRepository>>>) -> Json<Vec<Drink>> {
+fn drinks_get(drinks: State<Arc<Mutex<DrinksRepository>>>) -> Json<Vec<DrinkDto>> {
     let my_drinks = &mut *drinks.lock().unwrap();
 
     return Json(
@@ -16,7 +17,7 @@ fn drinks_get(drinks: State<Arc<Mutex<DrinksRepository>>>) -> Json<Vec<Drink>> {
             .get_drinks(false)
             .iter_mut()
             .map(|d| {
-                return d.clone();
+                DrinkDto::from_drink(d.clone())
             })
             .collect()
     );
@@ -24,22 +25,22 @@ fn drinks_get(drinks: State<Arc<Mutex<DrinksRepository>>>) -> Json<Vec<Drink>> {
 
 // Should use body params.
 #[post("/<name>")]
-fn drink_post(name: String, drinks: State<Arc<Mutex<DrinksRepository>>>) -> Json<Drink> {
+fn drink_post(name: String, drinks: State<Arc<Mutex<DrinksRepository>>>) -> Json<DrinkDto> {
     let my_drinks = &mut *drinks.lock().unwrap();
 
     let drink = my_drinks.create_drink(&name, "red");
 
-    return Json(drink);
+    return Json(DrinkDto::from_drink(drink));
 }
 
 #[get("/<id>")]
-fn drink_get(id: i32, drinks: State<Arc<Mutex<DrinksRepository>>>) -> Option<Json<Drink>> {
+fn drink_get(id: i32, drinks: State<Arc<Mutex<DrinksRepository>>>) -> Option<Json<DrinkDto>> {
     let my_drinks = &mut *drinks.lock().unwrap();
 
     let drink = my_drinks.find_by_id(id);
 
     match drink {
-        Some(d) => Some(Json(d)),
+        Some(d) => Some(Json(DrinkDto::from_drink(d))),
         None => None,
     }
 }
