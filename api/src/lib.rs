@@ -22,7 +22,7 @@ use rocket_cors::{
 };
 
 pub struct Api {
-    drinks: Arc<Mutex<DrinksRepository>>
+    drinks_repository: Arc<Mutex<DrinksRepository>>
 }
 
 #[get("/")]
@@ -53,16 +53,16 @@ fn make_cors() -> Cors {
 }
 
 impl Api {
-    pub fn new(drinks: Arc<Mutex<DrinksRepository>>) -> Api {
+    pub fn new() -> Api {
         return Api {
-            drinks: drinks
+            drinks_repository: Arc::new(Mutex::new(core::drinks_repository::DrinksRepository::new())),
         };
     }
     pub fn run(&self) {
         rocket::ignite()
+            .manage(self.drinks_repository.clone())
             .mount("/", routes![index])
             .mount("/drinks", controllers::drinks_controller::get_routes())
-            .manage(self.drinks.clone())
             .attach(make_cors())
             .launch();
     }
