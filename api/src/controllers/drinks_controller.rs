@@ -15,9 +15,9 @@ fn drinks_get(drinks: State<Arc<Mutex<DrinksRepository>>>) -> Json<Vec<DrinkDto>
     return Json(
         my_drinks
             .get_drinks(false)
-            .iter_mut()
+            .iter()
             .map(|d| {
-                DrinkDto::from_drink(d.clone())
+                DrinkDto::from_drink_with_count(d.clone())
             })
             .collect()
     );

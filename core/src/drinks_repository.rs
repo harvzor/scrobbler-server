@@ -1,6 +1,7 @@
 use diesel::prelude::*;
 
 use crate::models::drink::Drink;
+use crate::models::drink::DrinkWithCount;
 use crate::db::Db;
 
 pub struct DrinksRepository {
@@ -13,15 +14,33 @@ impl DrinksRepository {
             db: Db::new(),
         }
     }
-    pub fn get_drinks(&self, drink_deleted: bool) -> Vec<Drink> {
-        use crate::schema::drinks::dsl::*;
+    pub fn get_drinks(&self, drink_deleted: bool) -> Vec<DrinkWithCount> {
+        use crate::schema::*;
+        // use crate::schema::drinks::dsl::*;
+        // use crate::schema::drink_dranks::dsl::*;
+        
+        // I want something like:
+        // SELECT d.id, d.name, dd.count, d.colour, d.deleted
+        // FROM public.drinks d
+        // LEFT JOIN
+        // (
+        //     SELECT dd.drink_id, COUNT(*) as count
+        //     FROM public.drink_dranks dd
+        //     GROUP BY dd.drink_id
+        // ) dd ON d.id = dd.drink_id;
 
-        let results = drinks
-            .filter(deleted.eq(drink_deleted))
-            .load::<Drink>(&self.db.connection)
-            .expect("Error loading drinks");
+        let data = drinks::table.inner_join(drink_dranks::table)
+            .filter(drinks::deleted.eq(drink_deleted))
+            .select((drinks::id, drinks::name, drink_dranks::id, drinks::colour, drinks::deleted))
+            .load::<DrinkWithCount>(&self.db.connection)
+            .expect("Error");
 
-        results
+        // let results = drinks
+        //     .filter(deleted.eq(drink_deleted))
+        //     .load::<Drink>(&self.db.connection)
+        //     .expect("Error loading drinks");
+
+        data
     }
     pub fn create_drink<'a>(&self, name: &'a str, colour: &'a str) -> Drink {
         use crate::schema::drinks;
