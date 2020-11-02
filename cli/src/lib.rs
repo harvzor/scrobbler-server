@@ -99,9 +99,9 @@ impl Cli {
             .default(0)
             .items(&options[..])
             .interact()
-            .unwrap() as i32;
+            .unwrap();
 
-        self.drink_dranks_repository.create_drink_drank(user_selection);
+        self.drink_dranks_repository.create_drink_drank(drinks[user_selection].id);
     }
     fn menu_delete_drink(&self) {
         let drink_items = self.drinks_repository.get_drinks(false);
