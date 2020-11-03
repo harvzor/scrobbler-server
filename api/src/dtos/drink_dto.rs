@@ -5,7 +5,7 @@ use core::models::drink::DrinkWithCount;
 pub struct DrinkDto {
     pub id: i32,
     pub name: String,
-    pub count: Option<i32>,
+    pub count: Option<i64>,
     pub colour: String,
     pub deleted: bool,
 }
