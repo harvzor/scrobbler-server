@@ -18,22 +18,23 @@ pub struct NewDrink<'a> {
     pub colour: &'a str,
 }
 
-use diesel::sql_types::Integer;
-use diesel::sql_types::BigInt;
-use diesel::sql_types::Text;
-use diesel::sql_types::Bool;
-
-#[derive(Clone, Debug, QueryableByName)]
+#[derive(Clone, Debug)]
 pub struct DrinkWithCount {
-    #[sql_type = "Integer"]
     pub id: i32,
-    #[sql_type = "Text"]
     pub name: String,
-    /// Calculated property which comes from the `core::models::drink_drank::DrankDrank`s of this `Drink`.
-    #[sql_type = "BigInt"]
-    pub count: i64,
-    #[sql_type = "Text"]
+    pub count: i32,
     pub colour: String,
-    #[sql_type = "Bool"]
     pub deleted: bool,
+}
+
+impl DrinkWithCount {
+    pub fn from_drink_with_count(drink: &Drink, count: i32) -> DrinkWithCount {
+        DrinkWithCount {
+            id: drink.id,
+            name: drink.name.clone(),
+            count: count,
+            colour: drink.colour.clone(),
+            deleted: drink.deleted,
+        }
+    }
 }

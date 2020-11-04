@@ -5,7 +5,7 @@ use core::models::drink::DrinkWithCount;
 pub struct DrinkDto {
     pub id: i32,
     pub name: String,
-    pub count: Option<i64>,
+    pub count: i32,
     pub colour: String,
     pub deleted: bool,
 }
@@ -15,7 +15,7 @@ impl DrinkDto {
         DrinkDto {
             id: drink.id,
             name: drink.name,
-            count: None,
+            count: 0,
             colour: drink.colour,
             deleted: drink.deleted,
         }
@@ -24,7 +24,7 @@ impl DrinkDto {
         DrinkDto {
             id: drink_with_count.id,
             name: drink_with_count.name,
-            count: Some(drink_with_count.count),
+            count: drink_with_count.count,
             colour: drink_with_count.colour,
             deleted: drink_with_count.deleted,
         }

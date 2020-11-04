@@ -1,4 +1,5 @@
 use diesel::prelude::*;
+use diesel::dsl::*;
 
 use crate::models::drink_drank::DrinkDrank;
 use crate::db::Db;
@@ -41,6 +42,14 @@ impl DrinkDranksRepository {
 
         drink_dranks
             .filter(drink_id.eq(drink_drank_drink_id))
+            .load::<DrinkDrank>(&self.db.connection)
+            .expect("Error loading drink dranks")
+    }
+    pub fn get_drink_dranks_for_drinks(&self, drink_drank_drink_ids: Vec<i32>) -> Vec<DrinkDrank> {
+        use crate::schema::drink_dranks::dsl::*;
+
+        drink_dranks
+            .filter(drink_id.eq(any(drink_drank_drink_ids)))
             .load::<DrinkDrank>(&self.db.connection)
             .expect("Error loading drink dranks")
     }

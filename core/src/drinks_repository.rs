@@ -15,37 +15,37 @@ impl DrinksRepository {
         }
     }
     pub fn get_drinks(&self, drink_deleted: bool) -> Vec<DrinkWithCount> {
-        // use crate::schema::*;
+        // Not particularly efficient.
+        // Would be better to get the drinks with count in a single call but I can't get that to work.
+        // Seems Diesel doesn't really support joins too well.
+        // And I can't seem to get raw SQL really working either: https://github.com/Harvzor/drinks-drunk/commit/1081cec5a37cc84db242eaf669aea18a4a1b05b1
 
-        // use crate::schema::drinks::dsl::*;
-        // use crate::schema::drink_dranks::dsl::*;
+        use crate::schema::drinks::dsl::*;
+        use crate::drink_dranks_repository::DrinkDranksRepository;
 
-        // Guess I'll Diesel 2.0 for this.
-        // use diesel::dsl::count;
-        // use diesel::dsl::sql;
-        // use diesel::sql_types::BigInt;
-        // drinks::table
-        //     .left_join(drink_dranks::table.on(drinks::id.eq(drink_dranks::drink_id)))
-        //     .group_by(drink_dranks::drink_id)
-        //     .filter(drinks::deleted.eq(drink_deleted))
-        //     .select((drinks::id, drinks::name, count(drink_dranks::drink_id), drinks::colour, drinks::deleted))
-        //     // .select((drinks::id, drinks::name, sql::<BigInt>("COUNT(drink_dranks.drink_id) AS count"), drinks::colour, drinks::deleted))
-        //     .load::<DrinkWithCount>(&self.db.connection)
-        //     .expect("Error");
+        let drinks_result = drinks
+            .filter(deleted.eq(drink_deleted))
+            .load::<Drink>(&self.db.connection)
+            .expect("Error loading drinks");
 
-        // use diesel::sql_types::Integer;
-        // use diesel::sql_types::BigInt;
-        // use diesel::sql_types::Text;
-        // use diesel::sql_types::Bool;
+        let drink_ids = drinks_result
+            .iter()
+            .map(|x| x.id)
+            .collect();
 
-        diesel::sql_query(include_str!("drinks_with_count.sql"))
-            // .bind::<Integer, _>(id)
-            // .bind::<Text, _>(name)
-            // .bind::<BigInt, _>("count")
-            // .bind::<Text , _>(colour)
-            // .bind::<Bool, _>(deleted)
-            .load::<DrinkWithCount>(&self.db.connection)
-            .expect("Error")
+        let drink_drank_result = DrinkDranksRepository::new().get_drink_dranks_for_drinks(drink_ids);
+
+        drinks_result
+            .iter()
+            .map(|x| {
+                let count = drink_drank_result
+                    .iter()
+                    .filter(|y| y.drink_id == x.id)
+                    .count();
+
+                DrinkWithCount::from_drink_with_count(x, count as i32)
+            })
+            .collect()
     }
     pub fn create_drink<'a>(&self, name: &'a str, colour: &'a str) -> Drink {
         use crate::schema::drinks;
