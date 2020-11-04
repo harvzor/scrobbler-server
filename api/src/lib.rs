@@ -7,17 +7,6 @@ extern crate rocket_cors;
 use std::sync::{Arc, Mutex};
 
 use rocket::http::Method;
-
-use core::drinks_repository::DrinksRepository;
-
-mod controllers {
-    pub mod drinks_controller;
-}
-
-mod dtos {
-    pub mod drink_dto;
-}
-
 use rocket_cors::{
     AllowedHeaders,
     AllowedOrigins,
@@ -26,8 +15,17 @@ use rocket_cors::{
     CorsOptions,
 };
 
+mod controllers {
+    pub mod drinks_controller;
+    pub mod drink_dranks_controller;
+}
+
+mod dtos {
+    pub mod drink_dto;
+    pub mod drink_drank_dto;
+}
+
 pub struct Api {
-    drinks_repository: Arc<Mutex<DrinksRepository>>
 }
 
 #[get("/")]
@@ -60,14 +58,18 @@ fn make_cors() -> Cors {
 impl Api {
     pub fn new() -> Api {
         return Api {
-            drinks_repository: Arc::new(Mutex::new(core::drinks_repository::DrinksRepository::new())),
         };
     }
     pub fn run(&self) {
+        let drinks_repository = Arc::new(Mutex::new(core::drinks_repository::DrinksRepository::new()));
+        let drink_dranks_repository = Arc::new(Mutex::new(core::drink_dranks_repository::DrinkDranksRepository::new()));
+
         rocket::ignite()
-            .manage(self.drinks_repository.clone())
+            .manage(drinks_repository)
+            .manage(drink_dranks_repository)
             .mount("/", routes![index])
             .mount("/drinks", controllers::drinks_controller::get_routes())
+            .mount("/drink-dranks", controllers::drink_dranks_controller::get_routes())
             .attach(make_cors())
             .launch();
     }

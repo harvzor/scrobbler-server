@@ -17,21 +17,21 @@ pub struct DrinkDtoPost {
 }
 
 impl DrinkDto {
-    pub fn from_drink(drink: Drink) -> DrinkDto {
+    pub fn from_drink(drink: &Drink) -> DrinkDto {
         DrinkDto {
             id: drink.id,
-            name: drink.name,
+            name: drink.name.clone(),
             count: 0,
-            colour: drink.colour,
+            colour: drink.colour.clone(),
             deleted: drink.deleted,
         }
     }
-    pub fn from_drink_with_count(drink_with_count: DrinkWithCount) -> DrinkDto {
+    pub fn from_drink_with_count(drink_with_count: &DrinkWithCount) -> DrinkDto {
         DrinkDto {
             id: drink_with_count.id,
-            name: drink_with_count.name,
+            name: drink_with_count.name.clone(),
             count: drink_with_count.count,
-            colour: drink_with_count.colour,
+            colour: drink_with_count.colour.clone(),
             deleted: drink_with_count.deleted,
         }
     }
