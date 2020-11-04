@@ -10,6 +10,12 @@ pub struct DrinkDto {
     pub deleted: bool,
 }
 
+#[derive(Serialize, Deserialize)]
+pub struct DrinkDtoPost {
+    pub name: String,
+    pub colour: String,
+}
+
 impl DrinkDto {
     pub fn from_drink(drink: Drink) -> DrinkDto {
         DrinkDto {
