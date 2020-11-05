@@ -69,7 +69,7 @@ impl Api {
             .manage(drink_dranks_repository)
             .mount("/", routes![index])
             .mount("/drinks", controllers::drinks_controller::get_routes())
-            .mount("/drink-dranks", controllers::drink_dranks_controller::get_routes())
+            .mount("/drink_dranks", controllers::drink_dranks_controller::get_routes())
             .attach(make_cors())
             .launch();
     }
