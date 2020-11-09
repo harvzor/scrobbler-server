@@ -8,7 +8,7 @@ use std::sync::{Arc, Mutex};
 
 use rocket::http::Method;
 use rocket_cors::{
-    AllowedHeaders,
+    // AllowedHeaders,
     AllowedOrigins,
     // Error,
     Cors,
@@ -42,12 +42,13 @@ fn make_cors() -> Cors {
 
     CorsOptions {
         allowed_origins,
-        allowed_methods: vec![Method::Get].into_iter().map(From::from).collect(),
-        allowed_headers: AllowedHeaders::some(&[
-            "Authorization",
-            "Accept",
-            "Access-Control-Allow-Origin",
-        ]),
+        allowed_methods: vec![Method::Get, Method::Post].into_iter().map(From::from).collect(),
+        // allowed_headers: AllowedHeaders::some(&[
+        //     "Authorization",
+        //     "Accept",
+        //     "Access-Control-Allow-Origin",
+        //     "Access-Control-Request-Headers",
+        // ]),
         allow_credentials: true,
         ..Default::default()
     }

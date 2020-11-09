@@ -17,7 +17,7 @@ services:
       context: .
       dockerfile: ./Dockerfile.dev
     ports:
-      - 8000:8000
+      - 9999:8000
     stdin_open: true
     tty: true
     entrypoint: "cargo watch -c --poll -x check -s 'cargo run'"

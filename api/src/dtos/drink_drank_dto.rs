@@ -16,3 +16,8 @@ impl DrinkDrankDto {
         }
     }
 }
+
+#[derive(Serialize, Deserialize)]
+pub struct DrinkDrankPostDto {
+    pub drink_id: i32,
+}
