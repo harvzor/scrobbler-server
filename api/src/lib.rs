@@ -16,11 +16,13 @@ use rocket_cors::{
 };
 
 mod controllers {
+    pub mod health_controller;
     pub mod drinks_controller;
     pub mod drink_dranks_controller;
 }
 
 mod dtos {
+    pub mod health_dto;
     pub mod drink_dto;
     pub mod drink_drank_dto;
 }
@@ -69,6 +71,7 @@ impl Api {
             .manage(drinks_repository)
             .manage(drink_dranks_repository)
             .mount("/", routes![index])
+            .mount("/health", controllers::health_controller::get_routes())
             .mount("/drinks", controllers::drinks_controller::get_routes())
             .mount("/drink_dranks", controllers::drink_dranks_controller::get_routes())
             .attach(make_cors())
