@@ -1,7 +1,10 @@
-FROM rustlang/rust:nightly
-
-WORKDIR /app
+FROM rustlang/rust:nightly AS base
 
 RUN cargo install cargo-watch
 
-ENTRYPOINT [ "bash" ]
+FROM base AS dev
+
+WORKDIR /app
+
+CMD cargo watch -c --poll -x check -s 'cargo run --bin main'
+# `-poll` option is needed because of this issue: https://stackoverflow.com/questions/52996052/node-watch-on-a-docker-compose-volume-does-not-register-delete-events

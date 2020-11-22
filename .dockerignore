@@ -1,2 +1,5 @@
 .git
 target
+docker-compose.yml
+Dockerfile
+Dockerfile.*

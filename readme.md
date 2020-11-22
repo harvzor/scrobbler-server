@@ -5,22 +5,12 @@ An API for tracking drinks drunk.
 ## Running
 
 ```
-cargo +nightly run
-```
-
-or
-
-```
 docker-compose run --rm --service-ports drinks-drunk
 ```
 
+You can also add something like `cargo run --bin api` if you just want to run the API.
+
 ## Watching and running
-
-```
-cargo +nightly watch -x run
-```
-
-or
 
 ```
 docker-compose run --rm --service-ports drinks-drunk-dev

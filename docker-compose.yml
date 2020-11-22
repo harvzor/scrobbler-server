@@ -6,9 +6,6 @@ services:
       context: .
     ports:
       - 8000:8000
-    # stdin_open: true
-    # tty: true
-    command: "cargo run"
     depends_on:
       - postgres
 
@@ -16,12 +13,11 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile.dev
+      target: dev
     ports:
-      - 9999:8000
+      - 8000:8000
     stdin_open: true
     tty: true
-    entrypoint: "cargo watch -c --poll -x check -s 'cargo run'"
-    # `-poll` option is needed because of this issue: https://stackoverflow.com/questions/52996052/node-watch-on-a-docker-compose-volume-does-not-register-delete-events
     volumes:
       - ./:/app
     depends_on:
