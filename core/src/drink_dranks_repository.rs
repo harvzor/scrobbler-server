@@ -14,10 +14,12 @@ impl DrinkDranksRepository {
             db: Db::new(),
         }
     }
-    pub fn get_drink_dranks(&self) -> Vec<DrinkDrank> {
+    pub fn get_drink_dranks(&self, skip: i64, take: i64) -> Vec<DrinkDrank> {
         use crate::schema::drink_dranks::dsl::*;
 
         let results = drink_dranks
+            .offset(skip)
+            .limit(take)
             .load::<DrinkDrank>(&self.db.connection)
             .expect("Error loading drink dranks");
 

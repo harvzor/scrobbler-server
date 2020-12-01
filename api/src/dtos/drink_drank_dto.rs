@@ -21,3 +21,9 @@ impl DrinkDrankDto {
 pub struct DrinkDrankPostDto {
     pub drink_id: i32,
 }
+
+#[derive(FromForm)]
+pub struct DrinkDrankGetDto {
+    pub skip: Option<i64>,
+    pub take: Option<i64>,
+}

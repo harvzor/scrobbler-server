@@ -1,6 +1,7 @@
 use std::sync::{Arc, Mutex};
 
 use rocket_contrib::json::{Json};
+use rocket::request::Form;
 use rocket::State;
 use rocket::Route;
 
@@ -8,13 +9,23 @@ use core::drink_dranks_repository::DrinkDranksRepository;
 
 use crate::dtos::drink_drank_dto::*;
 
-#[get("/")]
-fn drink_dranks_get(drink_dranks: State<Arc<Mutex<DrinkDranksRepository>>>) -> Json<Vec<DrinkDrankDto>> {
+#[get("/?<drink_drank_get_dto..>")]
+fn drink_dranks_get(drink_drank_get_dto: Form<DrinkDrankGetDto>, drink_dranks: State<Arc<Mutex<DrinkDranksRepository>>>) -> Json<Vec<DrinkDrankDto>> {
     let drink_dranks_repo = &mut *drink_dranks.lock().unwrap();
+
+    let skip = match drink_drank_get_dto.skip {
+        Some(skip) => skip,
+        None => 0
+    };
+
+    let take= match drink_drank_get_dto.take {
+        Some(take) => take,
+        None => 10
+    };
 
     return Json(
         drink_dranks_repo
-            .get_drink_dranks()
+            .get_drink_dranks(skip, take)
             .iter()
             .map(|d| DrinkDrankDto::from_drink_drank(d))
             .collect()
