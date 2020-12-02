@@ -23,9 +23,19 @@ fn drink_dranks_get(drink_drank_get_dto: Form<DrinkDrankGetDto>, drink_dranks: S
         None => 10
     };
 
+    let from = match &drink_drank_get_dto.from {
+        Some(from) => Some(**from),
+        None => None
+    };
+
+    let to= match &drink_drank_get_dto.to {
+        Some(to) => Some(**to),
+        None => None
+    };
+
     return Json(
         drink_dranks_repo
-            .get_drink_dranks(skip, take)
+            .get_drink_dranks(skip, take, from, to)
             .iter()
             .map(|d| DrinkDrankDto::from_drink_drank(d))
             .collect()

@@ -14,10 +14,29 @@ impl DrinkDranksRepository {
             db: Db::new(),
         }
     }
-    pub fn get_drink_dranks(&self, skip: i64, take: i64) -> Vec<DrinkDrank> {
+    pub fn get_drink_dranks(&self, skip: i64, take: i64, from: Option<chrono::NaiveDateTime>, to: Option<chrono::NaiveDateTime>) -> Vec<DrinkDrank> {
         use crate::schema::drink_dranks::dsl::*;
 
-        let results = drink_dranks
+        let mut query = drink_dranks
+            .into_boxed();
+
+        match from {
+            Some(x) => {
+                query = query
+                    .filter(drank_timestamp.gt(x));
+            },
+            None => {}
+        }
+
+        match to {
+            Some(x) => {
+                query = query
+                    .filter(drank_timestamp.gt(x));
+            },
+            None => {}
+        }
+
+        let results = query
             .offset(skip)
             .limit(take)
             .load::<DrinkDrank>(&self.db.connection)
