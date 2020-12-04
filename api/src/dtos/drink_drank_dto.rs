@@ -81,16 +81,25 @@ impl<'v> FromFormValue<'v> for NaiveDateTimeForm {
         if decoded.len() < "0000-00-00T00:00".len() {
             return Err(form_value)
         }
-        // let date = NaiveDateForm::from_form_value(RawStr::from_str(&decoded[.."0000-00-00".len()]))
-        //     .map_err(|_| form_value)?;
-        // let time = NaiveTimeForm::from_form_value(RawStr::from_str(&decoded["0000-00-00T".len()..]))
-        //     .map_err(|_| form_value)?;
-        // Ok(NaiveDateTimeForm(NaiveDateTime::new(date, time)))
-        // Should be good with 2014-5-17T12:34:5.123+09:30
-        if let Ok(date) = NaiveDateTime::parse_from_str(&decoded, "%Y-%m-%dT%H:%M:%%.f%z") {
-            return Ok(NaiveDateTimeForm(date));
-        }
-        Err(form_value)
+        let date = NaiveDateForm::from_form_value(RawStr::from_str(&decoded[.."0000-00-00".len()]))
+            .map_err(|_| form_value)?;
+        let time = NaiveTimeForm::from_form_value(RawStr::from_str(&decoded["0000-00-00T".len()..]))
+            .map_err(|_| form_value)?;
+        Ok(NaiveDateTimeForm(NaiveDateTime::new(*date, *time)))
+    }
+}
+
+impl Deref for NaiveDateForm {
+    type Target = NaiveDate;
+    fn deref(&self) -> &NaiveDate {
+        &self.0
+    }
+}
+
+impl Deref for NaiveTimeForm {
+    type Target = NaiveTime;
+    fn deref(&self) -> &NaiveTime {
+        &self.0
     }
 }
 

@@ -31,7 +31,7 @@ impl DrinkDranksRepository {
         match to {
             Some(x) => {
                 query = query
-                    .filter(drank_timestamp.gt(x));
+                    .filter(drank_timestamp.lt(x));
             },
             None => {}
         }
