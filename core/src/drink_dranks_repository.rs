@@ -37,6 +37,7 @@ impl DrinkDranksRepository {
         }
 
         let results = query
+            .order(drank_timestamp.desc())
             .offset(skip)
             .limit(take)
             .load::<DrinkDrank>(&self.db.connection)
