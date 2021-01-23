@@ -28,3 +28,11 @@ docker-compose run --rm diesel-cli
 # diesel setup
 # diesel migration run
 ```
+
+## Building for ARM
+
+As of Docker v19.03.13, `docker buildx` can only be used by enabling experimental features.
+
+```
+docker buildx build --platform linux/arm/v7 .
+```
