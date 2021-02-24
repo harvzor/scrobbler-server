@@ -1,31 +1,31 @@
-use core::models::drink_drank::DrinkDrank;
+use core::models::scrobble::Scrobble;
 use rocket::request::FromFormValue;
 use rocket::http::RawStr;
 
 #[derive(Serialize)]
-pub struct DrinkDrankDto {
+pub struct ScrobbleDto {
     pub id: i32,
-    pub drink_id: i32,
-    pub drank_timestamp: chrono::NaiveDateTime,
+    pub trackable_id: i32,
+    pub timestamp: chrono::NaiveDateTime,
 }
 
-impl DrinkDrankDto {
-    pub fn from_drink_drank(drink_drank: &DrinkDrank) -> DrinkDrankDto {
-        DrinkDrankDto {
-            id: drink_drank.id,
-            drink_id: drink_drank.drink_id,
-            drank_timestamp: drink_drank.drank_timestamp,
+impl ScrobbleDto {
+    pub fn from_scrobble(scrobble: &Scrobble) -> ScrobbleDto {
+        ScrobbleDto {
+            id: scrobble.id,
+            trackable_id: scrobble.trackable_id,
+            timestamp: scrobble.timestamp,
         }
     }
 }
 
 #[derive(Serialize, Deserialize)]
-pub struct DrinkDrankPostDto {
-    pub drink_id: i32,
+pub struct ScrobblePostDto {
+    pub trackable_id: i32,
 }
 
 #[derive(FromForm)]
-pub struct DrinkDrankGetDto {
+pub struct ScrobbleGetDto {
     pub skip: Option<i64>,
     pub take: Option<i64>,
     pub from: Option<NaiveDateTimeForm>,

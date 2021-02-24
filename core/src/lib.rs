@@ -2,11 +2,11 @@
 extern crate dotenv;
 
 pub mod models {
-    pub mod drink;
-    pub mod drink_drank;
+    pub mod trackable;
+    pub mod scrobble;
 }
 
 pub mod schema;
-pub mod drinks_repository;
-pub mod drink_dranks_repository;
+pub mod trackables_repository;
+pub mod scrobbles_repository;
 pub mod db;

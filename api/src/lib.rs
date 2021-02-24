@@ -17,14 +17,14 @@ use rocket_cors::{
 
 mod controllers {
     pub mod health_controller;
-    pub mod drinks_controller;
-    pub mod drink_dranks_controller;
+    pub mod trackables_controller;
+    pub mod scrobbles_controller;
 }
 
 mod dtos {
     pub mod health_dto;
-    pub mod drink_dto;
-    pub mod drink_drank_dto;
+    pub mod trackable_dto;
+    pub mod scrobble_dto;
 }
 
 pub struct Api {
@@ -32,7 +32,7 @@ pub struct Api {
 
 #[get("/")]
 fn index() -> String {
-    return format!("Drinks Drunk!");
+    return format!("Scrobbler!");
 }
 
 fn make_cors() -> Cors {
@@ -64,16 +64,16 @@ impl Api {
         };
     }
     pub fn run(&self) {
-        let drinks_repository = Arc::new(Mutex::new(core::drinks_repository::DrinksRepository::new()));
-        let drink_dranks_repository = Arc::new(Mutex::new(core::drink_dranks_repository::DrinkDranksRepository::new()));
+        let trackables_repository = Arc::new(Mutex::new(core::trackables_repository::TrackablesRepository::new()));
+        let scrobbles_repository = Arc::new(Mutex::new(core::scrobbles_repository::ScrobblesRepository::new()));
 
         rocket::ignite()
-            .manage(drinks_repository)
-            .manage(drink_dranks_repository)
+            .manage(trackables_repository)
+            .manage(scrobbles_repository)
             .mount("/", routes![index])
             .mount("/health", controllers::health_controller::get_routes())
-            .mount("/drinks", controllers::drinks_controller::get_routes())
-            .mount("/drink_dranks", controllers::drink_dranks_controller::get_routes())
+            .mount("/trackables", controllers::trackables_controller::get_routes())
+            .mount("/scrobbles", controllers::scrobbles_controller::get_routes())
             .attach(make_cors())
             .launch();
     }

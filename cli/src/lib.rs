@@ -1,24 +1,24 @@
-use core::drinks_repository::DrinksRepository;
-use core::drink_dranks_repository::DrinkDranksRepository;
+use core::trackables_repository::TrackablesRepository;
+use core::scrobbles_repository::ScrobblesRepository;
 use dialoguer::{theme::ColorfulTheme, Select, Input};
 
 enum Action {
-    ListDrinks,
-    AddDrink,
-    IncrementDrink,
-    DeleteDrink,
+    ListTrackables,
+    AddTrackable,
+    IncrementTrackable,
+    DeleteTrackable,
 }
 
 pub struct Cli {
-    drinks_repository: DrinksRepository,
-    drink_dranks_repository: DrinkDranksRepository,
+    trackables_repository: TrackablesRepository,
+    scrobbles_repository: ScrobblesRepository,
 }
 
 impl Cli {
     pub fn new() -> Cli {
         Cli {
-            drinks_repository: DrinksRepository::new(),
-            drink_dranks_repository: DrinkDranksRepository::new(),
+            trackables_repository: TrackablesRepository::new(),
+            scrobbles_repository: ScrobblesRepository::new(),
         }
     }
     pub fn run(&self) {
@@ -26,20 +26,20 @@ impl Cli {
 
         match user_action {
             Some(action) => match action {
-                Action::ListDrinks => self.menu_list_drinks(),
-                Action::AddDrink => self.menu_add_drink(),
-                Action::IncrementDrink => self.menu_increment_drink(),
-                Action::DeleteDrink => self.menu_delete_drink(),
+                Action::ListTrackables => self.menu_list_trackables(),
+                Action::AddTrackable => self.menu_add_trackable(),
+                Action::IncrementTrackable => self.menu_increment_trackable(),
+                Action::DeleteTrackable => self.menu_delete_trackable(),
             },
             None => println!("??")
         }
     }
     fn menu_get_action(&self) -> Option<Action> {
         let options = &[
-            "List drinks",
-            "Add drink",
-            "Increment drink",
-            "Delete drink",
+            "List trackables",
+            "Add trackable",
+            "Increment trackable",
+            "Delete trackable",
         ];
 
         let user_selection = Select::with_theme(&ColorfulTheme::default())
@@ -50,82 +50,82 @@ impl Cli {
             .unwrap();
 
         match user_selection {
-            0 => Some(Action::ListDrinks),
-            1 => Some(Action::AddDrink),
-            2 => Some(Action::IncrementDrink),
-            3 => Some(Action::DeleteDrink),
+            0 => Some(Action::ListTrackables),
+            1 => Some(Action::AddTrackable),
+            2 => Some(Action::IncrementTrackable),
+            3 => Some(Action::DeleteTrackable),
             _ => None
         }
     }
-    fn menu_list_drinks(&self) {
-        println!("{:#?}", self.drinks_repository.get_drinks(false));
+    fn menu_list_trackables(&self) {
+        println!("{:#?}", self.trackables_repository.get(false));
     }
-    fn menu_add_drink(&self) {
-        let drink_name: String = Input::new()
-            .with_prompt("Drink name")
+    fn menu_add_trackable(&self) {
+        let name: String = Input::new()
+            .with_prompt("Trackable name")
             .interact()
             .unwrap();
 
-        let drink = self.drinks_repository.find_by_name(&drink_name);
+        let trackable = self.trackables_repository.find_by_name(&name);
 
-        match drink {
-            Some(_x) => println!("Drink already exists!"),
+        match trackable {
+            Some(_x) => println!("Trackable already exists!"),
             None => {
-                let drink_colour: String = Input::new()
-                    .with_prompt("Drink colour")
+                let colour: String = Input::new()
+                    .with_prompt("Trackable colour")
                     .interact()
                     .unwrap();
 
-                self.drinks_repository.create_drink(&drink_name, &drink_colour);
+                self.trackables_repository.create(&name, &colour);
             },
         }
     }
-    fn menu_increment_drink(&self) {
-        let drinks = self.drinks_repository.get_drinks(false);
+    fn menu_increment_trackable(&self) {
+        let trackables = self.trackables_repository.get(false);
 
-        if drinks.len() == 0 {
-            println!("No drinks to increment!");
+        if trackables.len() == 0 {
+            println!("No trackable to increment!");
 
             return;
         }
 
-        let options: Vec<&String> = drinks
+        let options: Vec<&String> = trackables
             .iter()
             .map(|x| &x.name)
             .collect();
 
         let user_selection = Select::with_theme(&ColorfulTheme::default())
-            .with_prompt("Select drink")
+            .with_prompt("Select trackable")
             .default(0)
             .items(&options[..])
             .interact()
             .unwrap();
 
-        self.drink_dranks_repository.create_drink_drank(drinks[user_selection].id);
+        self.scrobbles_repository.create(trackables[user_selection].id);
     }
-    fn menu_delete_drink(&self) {
-        let drink_items = self.drinks_repository.get_drinks(false);
+    fn menu_delete_trackable(&self) {
+        let trackable_items = self.trackables_repository.get(false);
 
-        if drink_items.len() == 0 {
-            println!("No drinks to delete!");
+        if trackable_items.len() == 0 {
+            println!("No trackables to delete!");
 
             return;
         }
 
-        let options: Vec<&String> = drink_items
+        let options: Vec<&String> = trackable_items
             .iter()
             .map(|x| &x.name)
             .collect();
 
         let user_selection = Select::with_theme(&ColorfulTheme::default())
-            .with_prompt("Delete drink")
+            .with_prompt("Delete trackable")
             .default(0)
             .items(&options[..])
             .interact()
             .unwrap();
 
-        let id = drink_items[user_selection].id;
+        let id = trackable_items[user_selection].id;
 
-        self.drinks_repository.delete_drink(id, false);
+        self.trackables_repository.delete(id, false);
     }
 }

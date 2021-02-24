@@ -1,6 +1,0 @@
-CREATE TABLE drinks (
-  id SERIAL PRIMARY KEY,
-  name VARCHAR NOT NULL,
-  colour VARCHAR NOT NULL,
-  deleted BOOLEAN NOT NULL DEFAULT 'f'
-)

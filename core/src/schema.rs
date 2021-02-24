@@ -1,13 +1,13 @@
 table! {
-    drink_dranks (id) {
+    scrobbles (id) {
         id -> Int4,
-        drink_id -> Int4,
-        drank_timestamp -> Timestamp,
+        trackable_id -> Int4,
+        timestamp -> Timestamp,
     }
 }
 
 table! {
-    drinks (id) {
+    trackables (id) {
         id -> Int4,
         name -> Varchar,
         colour -> Varchar,
@@ -15,9 +15,9 @@ table! {
     }
 }
 
-joinable!(drink_dranks -> drinks (drink_id));
+joinable!(scrobbles -> trackables(trackable_id));
 
 allow_tables_to_appear_in_same_query!(
-    drink_dranks,
-    drinks,
+    scrobbles,
+    trackables,
 );
