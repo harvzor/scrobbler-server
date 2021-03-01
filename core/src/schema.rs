@@ -15,7 +15,7 @@ table! {
     }
 }
 
-joinable!(scrobbles -> trackables(trackable_id));
+joinable!(scrobbles -> trackables (trackable_id));
 
 allow_tables_to_appear_in_same_query!(
     scrobbles,

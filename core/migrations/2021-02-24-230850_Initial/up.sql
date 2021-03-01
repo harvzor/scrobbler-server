@@ -3,7 +3,7 @@ CREATE TABLE trackables (
   name VARCHAR NOT NULL,
   colour VARCHAR NOT NULL,
   deleted BOOLEAN NOT NULL DEFAULT 'f'
-)
+);
 
 CREATE TABLE scrobbles (
   id SERIAL PRIMARY KEY,
