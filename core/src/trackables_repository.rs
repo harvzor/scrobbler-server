@@ -96,11 +96,11 @@ impl TrackablesRepository {
             Err(_) => return None,
         }
     }
-    pub fn find_by_name(&self, name: &String) -> Option<Trackable> {
+    pub fn find_by_name(&self, trackable_name: &String) -> Option<Trackable> {
         use crate::schema::trackables::dsl::*;
 
         let trackable = trackables
-            .filter(name.eq(name))
+            .filter(name.eq(trackable_name))
             .first::<Trackable>(&self.db.connection);
 
         match trackable {
