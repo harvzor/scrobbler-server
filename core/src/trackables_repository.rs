@@ -18,7 +18,7 @@ impl TrackablesRepository {
         // Not particularly efficient.
         // Would be better to get the trackables with count in a single call but I can't get that to work.
         // Seems Diesel doesn't really support joins too well.
-        // And I can't seem to get raw SQL really working either: https://github.com/Harvzor/drinks-drunk/commit/1081cec5a37cc84db242eaf669aea18a4a1b05b1
+        // And I can't seem to get raw SQL really working either: https://github.com/Harvzor/scrobbler-server/commit/1081cec5a37cc84db242eaf669aea18a4a1b05b1
 
         use crate::schema::trackables::dsl::*;
         use crate::scrobbles_repository::ScrobblesRepository;

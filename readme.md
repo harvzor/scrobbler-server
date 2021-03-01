@@ -1,4 +1,4 @@
-# Scrobbler backend
+# Scrobbler server
 
 An API for things.
 
