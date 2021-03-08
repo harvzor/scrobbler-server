@@ -2,8 +2,8 @@
 #FROM rustlang/rust:nightly
 FROM rust:1.49
 
-ARG TARGET="aarch64-unknown-linux-musl"
-# ARG TARGET="arm-unknown-linux-gnueabihf"
+# ARG TARGET="aarch64-unknown-linux-musl"
+ARG TARGET="arm-unknown-linux-gnueabihf"
 
 WORKDIR /app
 
@@ -12,23 +12,13 @@ RUN rustup target add $TARGET
 RUN apt-get update
 RUN apt-get install gcc-arm-linux-gnueabihf -y
 RUN mkdir .cargo
-RUN echo '[target.aarch64-unknown-linux-musl]' >> .cargo/config
-RUN echo 'linker = "aarch64-unknown-linux-musl"' >> .cargo/config
+# RUN echo '[target.${TARGET}]' >> .cargo/config
+# RUN echo 'linker = "${TARGET}"' >> .cargo/config
+RUN git clone --depth=1 https://github.com/raspberrypi/tools raspberrypi-tools
+RUN mkdir .cargo
+RUN echo "[target.${TARGET}]" >> .cargo/config
+RUN echo "linker = \"$(pwd)/raspberrypi-tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf-gcc\"" >> .cargo/config
 
 COPY . .
 
 RUN cargo build --target=$TARGET
-
-# FROM rustlang/rust:nightly
-
-# WORKDIR /app
-
-# RUN rustup target add arm-unknown-linux-gnueabihf
-# RUN git clone --depth=1 https://github.com/raspberrypi/tools raspberrypi-tools
-# RUN mkdir .cargo
-# RUN echo "[target.arm-unknown-linux-gnueabihf]" >> .cargo/config
-# RUN echo "linker = \"$(pwd)/raspberrypi-tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf-gcc\"" >> .cargo/config
-
-# COPY . .
-
-# RUN cargo build --target=arm-unknown-linux-gnueabihf
