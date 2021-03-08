@@ -2,7 +2,7 @@ FROM rustlang/rust:nightly
 
 WORKDIR /app
 
-RUN rustup target add 
+RUN rustup target add aarch64-unknown-linux-musl
 RUN apt-get update
 RUN apt-get install gcc-arm-linux-gnueabihf -y
 RUN mkdir .cargo
