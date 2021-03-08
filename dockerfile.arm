@@ -18,7 +18,7 @@ RUN mkdir .cargo
 
 RUN apt-get install gcc-arm-linux-gnueabihf -y
 RUN echo "[target.${TARGET}]" >> .cargo/config
-RUN echo "linker = arm-linux-gnueabihf-gcc" >> .cargo/config
+RUN echo "linker = \"arm-linux-gnueabihf-gcc\"" >> .cargo/config
 
 COPY . .
 
