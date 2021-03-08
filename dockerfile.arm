@@ -16,9 +16,9 @@ RUN mkdir .cargo
 # RUN echo "[target.${TARGET}]" >> .cargo/config
 # RUN echo "linker = \"$(pwd)/raspberrypi-tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf-gcc\"" >> .cargo/config
 
-RUN apt-get install gcc-arm-linux-gnueabihf -y
-RUN echo "[target.${TARGET}]" >> .cargo/config
-RUN echo "linker = \"arm-linux-gnueabihf-gcc\"" >> .cargo/config
+# RUN apt-get install gcc-arm-linux-gnueabihf -y
+# RUN echo "[target.${TARGET}]" >> .cargo/config
+# RUN echo "linker = \"arm-linux-gnueabihf-gcc\"" >> .cargo/config
 
 COPY . .
 
