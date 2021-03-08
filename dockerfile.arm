@@ -10,7 +10,6 @@ WORKDIR /app
 RUN rustup default nightly
 RUN rustup target add $TARGET
 RUN apt-get update
-RUN apt-get install build-essential -y
 RUN mkdir .cargo
 
 # RUN git clone --depth=1 https://github.com/raspberrypi/tools raspberrypi-tools

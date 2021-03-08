@@ -8,5 +8,5 @@ os: linux
 services:
   - docker
 script:
-  - docker build -t scrobbler-server . -f dockerfile.arm
-  # - docker build -t scrobbler-server .
+  # - docker build -t scrobbler-server . -f dockerfile.arm
+  - docker build -t scrobbler-server .
