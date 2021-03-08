@@ -10,14 +10,15 @@ WORKDIR /app
 RUN rustup default nightly
 RUN rustup target add $TARGET
 RUN apt-get update
-RUN apt-get install gcc-arm-linux-gnueabihf -y
 RUN mkdir .cargo
-# RUN echo '[target.${TARGET}]' >> .cargo/config
-# RUN echo 'linker = "${TARGET}"' >> .cargo/config
+
 RUN git clone --depth=1 https://github.com/raspberrypi/tools raspberrypi-tools
-RUN mkdir .cargo
 RUN echo "[target.${TARGET}]" >> .cargo/config
 RUN echo "linker = \"$(pwd)/raspberrypi-tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin/arm-linux-gnueabihf-gcc\"" >> .cargo/config
+
+# RUN apt-get install gcc-arm-linux-gnueabihf -y
+# RUN echo '[target.${TARGET}]' >> .cargo/config
+# RUN echo 'linker = "${TARGET}"' >> .cargo/config
 
 COPY . .
 
