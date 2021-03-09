@@ -6,6 +6,8 @@ RUN rustup default nightly
 
 WORKDIR /app
 
+COPY . .
+
 RUN apt-get update -qq
 RUN rm -rf /var/lib/apt/lists/*
 RUN cargo install diesel_cli --no-default-features --features postgres

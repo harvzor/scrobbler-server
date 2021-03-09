@@ -1,18 +1,32 @@
-language: generic
-if: branch = master
-git: { depth: 3 }
-arch:
-  # - amd64
-  - arm64
-os: linux
-services:
-  - docker
-script:
-  - REMOTE="harvzor"
-  - LOCAL_IMAGE="scrobbler-server"
-  - docker build -t $LOCAL_IMAGE .
-  - docker login -u harvzor -p $DOCKER_HUB_PASS
-  - docker tag $LOCAL_IMAGE:latest $REMOTE/$LOCAL_IMAGE:latest
-  - docker tag $LOCAL_IMAGE:latest $REMOTE/$LOCAL_IMAGE:$TRAVIS_BUILD_NUMBER
-  - docker push $REMOTE/$LOCAL_IMAGE:latest
-  - docker push $REMOTE/$LOCAL_IMAGE:$TRAVIS_BUILD_NUMBER 
+
+
+jobs:
+  include:
+    - stage: Build
+      language: generic
+      if: branch = master
+      git: { depth: 3 }
+      arch:
+        # - amd64
+        - arm64
+      os: linux
+      services:
+        - docker
+      script:
+        - REMOTE="harvzor"
+        - LOCAL_IMAGE="scrobbler-server"
+        - docker build -t $LOCAL_IMAGE .
+        - docker login -u harvzor -p $DOCKER_HUB_PASS
+        - docker tag $LOCAL_IMAGE:latest $REMOTE/$LOCAL_IMAGE:latest
+        - docker tag $LOCAL_IMAGE:latest $REMOTE/$LOCAL_IMAGE:$TRAVIS_BUILD_NUMBER
+        - docker push $REMOTE/$LOCAL_IMAGE:latest
+        - docker push $REMOTE/$LOCAL_IMAGE:$TRAVIS_BUILD_NUMBER 
+      script:
+        - REMOTE="harvzor"
+        - LOCAL_IMAGE="scrobbler-server-diesel-cli"
+        - docker build -t $LOCAL_IMAGE . -f Dockerfile.diesel-cli
+        - docker login -u harvzor -p $DOCKER_HUB_PASS
+        - docker tag $LOCAL_IMAGE:latest $REMOTE/$LOCAL_IMAGE:latest
+        - docker tag $LOCAL_IMAGE:latest $REMOTE/$LOCAL_IMAGE:$TRAVIS_BUILD_NUMBER
+        - docker push $REMOTE/$LOCAL_IMAGE:latest
+        - docker push $REMOTE/$LOCAL_IMAGE:$TRAVIS_BUILD_NUMBER 
