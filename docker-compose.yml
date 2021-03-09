@@ -64,7 +64,7 @@ services:
       - postgres
 
   diesel-cli-prod:
-    image: scrobbler-server-diesel-cli:latest
+    image: harvzor/scrobbler-server-diesel-cli:latest
     stdin_open: true
     tty: true
     entrypoint: "bash"
