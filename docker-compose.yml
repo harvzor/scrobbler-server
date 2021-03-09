@@ -1,7 +1,16 @@
 version: "3.4"
 
 services:
-  scrobbler:
+  scrobbler-server-prod:
+    image: harvzor/scrobbler-server:latest
+    ports:
+      - 8000:8000
+    stdin_open: true
+    tty: true
+    depends_on:
+      - postgres
+
+  scrobbler-server:
     build:
       context: .
     ports:
@@ -9,7 +18,7 @@ services:
     depends_on:
       - postgres
 
-  scrobbler-dev:
+  scrobbler-server-dev:
     build:
       context: .
       dockerfile: ./Dockerfile.dev

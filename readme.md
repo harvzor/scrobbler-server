@@ -5,7 +5,7 @@ An API for things.
 ## Running
 
 ```
-docker-compose run --rm --service-ports scrobbler
+docker-compose run --rm --service-ports scrobbler-server
 ```
 
 You can also add something like `cargo run --bin api` if you just want to run the API.
@@ -13,7 +13,7 @@ You can also add something like `cargo run --bin api` if you just want to run th
 ## Watching and running
 
 ```
-docker-compose run --rm --service-ports scrobbler-dev
+docker-compose run --rm --service-ports scrobbler-server-dev
 ```
 
 ## Running migrations
