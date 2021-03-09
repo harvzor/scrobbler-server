@@ -8,5 +8,15 @@ os: linux
 services:
   - docker
 script:
-  # - docker build -t scrobbler-server . -f dockerfile.arm
-  - docker build -t scrobbler-server .
+  - REMOTE="harvzor"
+  - LOCAL_IMAGE="scrobbler-server"
+  - docker build -t $LOCAL_IMAGE .
+deploy:
+  - provider: script
+    script:
+      - docker login -u harvzor -p $DOCKER_HUB_PASS
+      - docker tag $LOCAL_IMAGE:latest $REMOTE/$LOCAL_IMAGE:latest
+      - docker tag $LOCAL_IMAGE:latest $REMOTE/$LOCAL_IMAGE:$TRAVIS_BUILD_NUMBER
+      - docker push $REMOTE/$LOCAL_IMAGE:latest
+      - docker push $REMOTE/$LOCAL_IMAGE:$TRAVIS_BUILD_NUMBER 
+    skip_cleanup: true
