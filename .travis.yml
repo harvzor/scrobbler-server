@@ -16,7 +16,3 @@ script:
   - docker tag $LOCAL_IMAGE:latest $REMOTE/$LOCAL_IMAGE:$TRAVIS_BUILD_NUMBER
   - docker push $REMOTE/$LOCAL_IMAGE:latest
   - docker push $REMOTE/$LOCAL_IMAGE:$TRAVIS_BUILD_NUMBER 
-# deploy:
-#   - provider: script
-#     script: publish_images.sh
-#     skip_cleanup: true

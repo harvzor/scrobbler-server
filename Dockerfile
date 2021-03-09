@@ -2,12 +2,12 @@
 #FROM rustlang/rust:nightly
 FROM rust:1.49
 
-# RUN rustup default nightly
+RUN rustup default nightly
 
-# WORKDIR /app
+WORKDIR /app
 
-# COPY . .
+COPY . .
 
-# RUN cargo build
+RUN cargo build
 
-# CMD cargo run --bin main
+CMD cargo run --bin main
