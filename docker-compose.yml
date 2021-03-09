@@ -62,3 +62,11 @@ services:
       - ./:/app
     depends_on:
       - postgres
+
+  diesel-cli-prod:
+    image: scrobbler-server-diesel-cli:latest
+    stdin_open: true
+    tty: true
+    entrypoint: "bash"
+    depends_on:
+      - postgres
