@@ -19,7 +19,7 @@ script:
   - REMOTE="harvzor"
   - LOCAL_IMAGE="scrobbler-server"
   # - docker build -t $LOCAL_IMAGE .
-  - docker buildx build -t $LOCAL_IMAGE --platform linux/arm/v7 . 
+  - docker buildx build --tag $LOCAL_IMAGE --platform linux/arm/v7 . 
   - docker tag $LOCAL_IMAGE:latest $REMOTE/$LOCAL_IMAGE:latest
   - docker tag $LOCAL_IMAGE:latest $REMOTE/$LOCAL_IMAGE:$TRAVIS_BUILD_NUMBER
 deploy:
