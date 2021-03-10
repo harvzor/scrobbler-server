@@ -1,14 +1,6 @@
 version: "3.4"
 
 services:
-  scrobbler-server-prod:
-    image: harvzor/scrobbler-server:latest
-    ports:
-      - 8000:8000
-    stdin_open: true
-    tty: true
-    depends_on:
-      - postgres
 
   scrobbler-server:
     build:
@@ -53,8 +45,7 @@ services:
 
   diesel-cli:
     build:
-        context: .
-        dockerfile: ./Dockerfile.diesel-cli
+      context: .
     stdin_open: true
     tty: true
     entrypoint: "bash"
@@ -63,8 +54,17 @@ services:
     depends_on:
       - postgres
 
+  scrobbler-server-prod:
+    image: harvzor/scrobbler-server:latest
+    ports:
+      - 8000:8000
+    stdin_open: true
+    tty: true
+    depends_on:
+      - postgres
+
   diesel-cli-prod:
-    image: harvzor/scrobbler-server-diesel-cli:latest
+    image: harvzor/scrobbler-server:latest
     stdin_open: true
     tty: true
     entrypoint: "bash"

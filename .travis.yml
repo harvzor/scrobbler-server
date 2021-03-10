@@ -1,42 +1,29 @@
-
-
-jobs:
-  include:
-    - stage: Build
-      language: generic
-      if: branch = master
-      git: { depth: 3 }
-      arch:
-        # - amd64
-        - arm64
-      os: linux
-      services:
-        - docker
-      script:
-        - REMOTE="harvzor"
-        - LOCAL_IMAGE="scrobbler-server"
-        - docker build -t $LOCAL_IMAGE .
-        - docker login -u harvzor -p $DOCKER_HUB_PASS
-        - docker tag $LOCAL_IMAGE:latest $REMOTE/$LOCAL_IMAGE:latest
-        - docker tag $LOCAL_IMAGE:latest $REMOTE/$LOCAL_IMAGE:$TRAVIS_BUILD_NUMBER
-        - docker push $REMOTE/$LOCAL_IMAGE:latest
-        - docker push $REMOTE/$LOCAL_IMAGE:$TRAVIS_BUILD_NUMBER 
-    - # stage name not required
-      language: generic
-      if: branch = master
-      git: { depth: 3 }
-      arch:
-        # - amd64
-        - arm64
-      os: linux
-      services:
-        - docker
-      script:
-        - REMOTE="harvzor"
-        - LOCAL_IMAGE="scrobbler-server-diesel-cli"
-        - docker build -t $LOCAL_IMAGE . -f Dockerfile.diesel-cli
-        - docker login -u harvzor -p $DOCKER_HUB_PASS
-        - docker tag $LOCAL_IMAGE:latest $REMOTE/$LOCAL_IMAGE:latest
-        - docker tag $LOCAL_IMAGE:latest $REMOTE/$LOCAL_IMAGE:$TRAVIS_BUILD_NUMBER
-        - docker push $REMOTE/$LOCAL_IMAGE:latest
-        - docker push $REMOTE/$LOCAL_IMAGE:$TRAVIS_BUILD_NUMBER 
+language: generic
+if: branch = master
+git: { depth: 3 }
+arch:
+  # - amd64
+  - arm64
+os: linux
+services:
+  - docker
+install:
+  # Switch Docker to experimental for multi-arch building
+  - echo '{"experimental":"enabled"}' | sudo tee $HOME/.docker/config.json
+  # - echo '{"auths":{},"credStore":"desktop","credsStore":"desktop","experimental":"enabled","stackOrchestrator":"swarm"}' > ~/.docker/config.json
+  # - service docker restart
+script:
+  - REMOTE="harvzor"
+  - LOCAL_IMAGE="scrobbler-server"
+  # - docker build -t $LOCAL_IMAGE .
+  - docker buildx build -t $LOCAL_IMAGE --platform linux/arm/v7 . 
+  - docker tag $LOCAL_IMAGE:latest $REMOTE/$LOCAL_IMAGE:latest
+  - docker tag $LOCAL_IMAGE:latest $REMOTE/$LOCAL_IMAGE:$TRAVIS_BUILD_NUMBER
+deploy:
+  - provider: script
+    script:
+      docker login -u harvzor -p $DOCKER_HUB_PASS && docker push $REMOTE/$LOCAL_IMAGE:latest && docker push $REMOTE/$LOCAL_IMAGE:$TRAVIS_BUILD_NUMBER 
+    on:
+      # fallback solution to allow pushing from tags, branch is still equal to tag
+      all_branches: true
+    skip_cleanup: true
