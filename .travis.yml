@@ -10,8 +10,7 @@ services:
   - docker
 install:
   # Switch Docker to experimental for multi-arch building
-  - echo '{"experimental":"enabled"}' | sudo tee $HOME/.docker/config.json
-  # - echo '{"auths":{},"credStore":"desktop","credsStore":"desktop","experimental":"enabled","stackOrchestrator":"swarm"}' > ~/.docker/config.json
+  - cat <<< $(jq '.+{"experimental":"enabled"}' ~/.docker/config.json) > ~/.docker/config.json
   # - service docker restart
 script:
   - REMOTE="harvzor"
