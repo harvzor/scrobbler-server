@@ -14,9 +14,9 @@ install:
   - touch ~/.docker/config.json
   - echo '{"experimental":"enabled"}' | sudo tee $HOME/.docker/config.json
   # - cat <<< $(jq '.+{"experimental":"enabled"}' ~/.docker/config.json) > ~/.docker/config.json
-  # - service docker restart
-  - docker buildx create --name multibuilder --use
-  - docker buildx inspect multibuilder --bootstrap
+  - service docker restart
+  # - docker buildx create --name multibuilder --use
+  # - docker buildx inspect multibuilder --bootstrap
 script:
   - REMOTE="harvzor"
   - LOCAL_IMAGE="scrobbler-server"
