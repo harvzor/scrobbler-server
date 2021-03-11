@@ -80,8 +80,7 @@ function multi_arch_docker::build() {
 # https://www.reddit.com/r/rust/comments/dn1g58/spurios_network_error_and_failed_to_load_source/f59861u/?utm_source=reddit&utm_medium=web2x&context=3
 function multi_arch_docker::fix_libgit2() {
     mkdir ~/.cargo
-    echo "[http]" >> ~/.cargo/config
-    echo "timeout = 29 # default is 30. Any non-default config works." >> ~/.cargo/config
+    echo "[http]\ntimeout = 29 # default is 30. Any non-default config works." >> ~/.cargo/config
 }
 
 function multi_arch_docker::main() {
