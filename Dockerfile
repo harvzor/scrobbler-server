@@ -8,7 +8,8 @@ WORKDIR /app
 
 COPY . .
 
-RUN cargo build --release
+RUN cargo build
+    # --release
 
 # For running diesel cli.
 RUN apt-get update -qq
