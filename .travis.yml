@@ -2,9 +2,9 @@ dist: xenial
 language: generic
 if: branch = master
 git: { depth: 3 }
-arch:
-  # - amd64
-  - arm64
+# arch:
+#   # - amd64
+#   - arm64
 os: linux
 services:
   - docker
