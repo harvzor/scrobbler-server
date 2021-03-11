@@ -9,12 +9,13 @@ os: linux
 services:
   - docker
 install:
-  # Switch Docker to experimental for multi-arch building
+  # Switch Docker to experimental for multi-arch building - https://github.com/travis-ci/travis-ci/issues/8740
   - mkdir ~/.docker
   - touch ~/.docker/config.json
   - echo '{"experimental":"enabled"}' | sudo tee $HOME/.docker/config.json
   # - cat <<< $(jq '.+{"experimental":"enabled"}' ~/.docker/config.json) > ~/.docker/config.json
-  - sudo service docker restart
+  # - sudo service docker restart
+  - sudo systemctl start docker
   # - docker buildx create --name multibuilder --use
   # - docker buildx inspect multibuilder --bootstrap
 script:
