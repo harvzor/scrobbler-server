@@ -8,6 +8,10 @@ arch:
 os: linux
 services:
   - docker
+env:
+  global:
+    - REMOTE="harvzor"
+    - LOCAL_IMAGE="scrobbler-server"
 install:
   # Switch Docker to experimental for multi-arch building - https://github.com/travis-ci/travis-ci/issues/8740
   - mkdir ~/.docker
@@ -19,12 +23,13 @@ install:
   # - docker buildx create --name multibuilder --use
   # - docker buildx inspect multibuilder --bootstrap
 script:
-  - REMOTE="harvzor"
-  - LOCAL_IMAGE="scrobbler-server"
   # - docker build -t $LOCAL_IMAGE .
   - docker buildx build --platform linux/arm/v7 --tag $LOCAL_IMAGE .
   - docker tag $LOCAL_IMAGE:latest $REMOTE/$LOCAL_IMAGE:latest
   - docker tag $LOCAL_IMAGE:latest $REMOTE/$LOCAL_IMAGE:$TRAVIS_BUILD_NUMBER
+
+  - source ./multi-arch-docker-ci.sh
+  - travis_wait 40 multi_arch_docker::main
 deploy:
   - provider: script
     script:
