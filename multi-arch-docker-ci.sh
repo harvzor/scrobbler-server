@@ -59,39 +59,30 @@ function multi_arch_docker::install_docker_buildx() {
   docker buildx inspect --bootstrap
 }
 
-# Log in to Docker Hub for deployment.
-# Env:
-#   DOCKER_USERNAME ... user name of Docker Hub account
-#   DOCKER_PASSWORD ... password of Docker Hub account
-function multi_arch_docker::login_to_docker_hub() {
-  echo "$DOCKERHUB_PW" | docker login -u="$DOCKERHUB_USER" --password-stdin
-}
-
 # Run buildx build and push.
 # Env:
 #   DOCKER_PLATFORMS ... space separated list of Docker platforms to build.
-function multi_arch_docker::build_and_push() {
+function multi_arch_docker::build() {
   docker buildx build \
     --platform "${DOCKER_PLATFORMS// /,}" \
-    -t "$IMAGE_NAME:latest" -t "$IMAGE_NAME:$TRAVIS_TAG" \
+    -t "$IMAGE_NAME:latest" -t "$IMAGE_NAME:$TRAVIS_BUILD_NUMBER" \
     --progress plain \
-    --push \
     .
 }
 
 function multi_arch_docker::main() {
   set -ex
   # Set docker platforms for which to build (careful, takes forever!)
-  export DOCKER_PLATFORMS='linux/amd64'
+  export DOCKER_PLATFORMS=''
+  # DOCKER_PLATFORMS+=' linux/amd64'
   # DOCKER_PLATFORMS+=' linux/arm/v6'
   DOCKER_PLATFORMS+=' linux/arm/v7'
   # DOCKER_PLATFORMS+=' linux/arm64'
 
-  export IMAGE_NAME=${DOCKERHUB_USER}/cutsolver
+  export IMAGE_NAME=${DOCKERHUB_USER}/${IMAGE_REPO_NAME}
 
   multi_arch_docker::install_docker_buildx
-  multi_arch_docker::login_to_docker_hub
-  multi_arch_docker::build_and_push
+  multi_arch_docker::build
   set +x
   return 0
 }

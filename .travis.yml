@@ -10,31 +10,15 @@ services:
   - docker
 env:
   global:
-    - REMOTE="harvzor"
-    - LOCAL_IMAGE="scrobbler-server"
-install:
-  # Switch Docker to experimental for multi-arch building - https://github.com/travis-ci/travis-ci/issues/8740
-  - mkdir ~/.docker
-  - touch ~/.docker/config.json
-  - echo '{"experimental":"enabled"}' | sudo tee $HOME/.docker/config.json
-  # - cat <<< $(jq '.+{"experimental":"enabled"}' ~/.docker/config.json) > ~/.docker/config.json
-  # - sudo service docker restart
-  - sudo systemctl start docker
-  # - docker buildx create --name multibuilder --use
-  # - docker buildx inspect multibuilder --bootstrap
+    - DOCKERHUB_USER="harvzor"
+    - IMAGE_REPO_NAME="scrobbler-server"
 script:
-  # - docker build -t $LOCAL_IMAGE .
-  - docker buildx build --platform linux/arm/v7 --tag $LOCAL_IMAGE .
-  - docker tag $LOCAL_IMAGE:latest $REMOTE/$LOCAL_IMAGE:latest
-  - docker tag $LOCAL_IMAGE:latest $REMOTE/$LOCAL_IMAGE:$TRAVIS_BUILD_NUMBER
-
   - source ./multi-arch-docker-ci.sh
   - travis_wait 40 multi_arch_docker::main
 deploy:
   - provider: script
     script:
-      docker login -u harvzor -p $DOCKER_HUB_PASS && docker push $REMOTE/$LOCAL_IMAGE:latest && docker push $REMOTE/$LOCAL_IMAGE:$TRAVIS_BUILD_NUMBER 
+      docker login -u $DOCKERHUB_USER -p $DOCKER_HUB_PASS && docker push $DOCKERHUB_USER/$IMAGE_REPO_NAME:latest && docker push $DOCKERHUB_USER/$IMAGE_REPO_NAME:$TRAVIS_BUILD_NUMBER 
     on:
-      # fallback solution to allow pushing from tags, branch is still equal to tag
       all_branches: true
     skip_cleanup: true
