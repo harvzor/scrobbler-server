@@ -70,6 +70,19 @@ function multi_arch_docker::build() {
     .
 }
 
+# Try to solve:
+#9 [5/7] RUN cargo build --release
+#9 sha256:18d66e9af217609109ab7171b73584c9a4ad2b194d2689b2212723e765b17ce7
+#9 3.581     Updating crates.io index
+#9 3.761 warning: spurious network error (2 tries remaining): could not read directory '/usr/local/cargo/registry/index/github.com-1285ae84e5963aae/.git//refs': Value too large for defined data type; class=Os (2)
+#9 3.871 warning: spurious network error (1 tries remaining): could not read directory '/usr/local/cargo/registry/index/github.com-1285ae84e5963aae/.git//refs': Value too large for defined data type; class=Os (2)
+#9 3.997 error: failed to get `chrono` as a dependency of package `core v0.1.0 (/app/core)`
+# https://www.reddit.com/r/rust/comments/dn1g58/spurios_network_error_and_failed_to_load_source/f59861u/?utm_source=reddit&utm_medium=web2x&context=3
+function multi_arch_docker::fix_libgit2() {
+    echo "[http]" >> ~/.cargo/config
+    echo "timeout = 29 # default is 30. Any non-default config works." >> ~/.cargo/config
+}
+
 function multi_arch_docker::main() {
   set -ex
   # Set docker platforms for which to build (careful, takes forever!)
@@ -81,6 +94,7 @@ function multi_arch_docker::main() {
   export IMAGE_NAME=${DOCKERHUB_USER}/${IMAGE_REPO_NAME}
 
   multi_arch_docker::install_docker_buildx
+  multi_arch_docker::fix_libgit2
   multi_arch_docker::build
   set +x
   return 0
