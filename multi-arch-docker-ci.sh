@@ -81,7 +81,6 @@ function multi_arch_docker::main() {
   export IMAGE_NAME=${DOCKERHUB_USER}/${IMAGE_REPO_NAME}
 
   multi_arch_docker::install_docker_buildx
-  multi_arch_docker::fix_libgit2
   multi_arch_docker::build
   set +x
   return 0
