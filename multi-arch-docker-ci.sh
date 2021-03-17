@@ -73,7 +73,8 @@ function multi_arch_docker::build() {
 function multi_arch_docker::main() {
   set -ex
   # Set docker platforms for which to build (careful, takes forever!)
-  export DOCKER_PLATFORMS='linux/arm/v7'
+  export DOCKER_PLATFORMS='linux/arm/v6'
+  # export DOCKER_PLATFORMS='linux/arm/v7'
   # DOCKER_PLATFORMS+=',linux/amd64'
   # DOCKER_PLATFORMS+=',linux/arm/v6'
   # DOCKER_PLATFORMS+=',linux/arm64'
