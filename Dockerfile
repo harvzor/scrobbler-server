@@ -14,4 +14,4 @@ RUN cargo build --release
 RUN apt-get update -qq
 RUN cargo install diesel_cli --no-default-features --features postgres
 
-CMD cargo run --bin main
+CMD cargo run --release --bin main
